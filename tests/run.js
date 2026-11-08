@@ -7,6 +7,7 @@ const Logic = require(path.join(root, 'js/logic.js'));
 const STATUS = require(path.join(root, 'js/data/status.js'));
 const SOURCES = require(path.join(root, 'js/data/sources.js'));
 const COURSE = require(path.join(root, 'js/data/course.js'));
+const INTRO = require(path.join(root, 'js/data/introduction.js'));
 const ADDITIONS = require(path.join(root, 'js/data/additions.js')).concat(require(path.join(root, 'js/data/additions-b.js')));
 const GLOSSARY = require(path.join(root, 'js/data/glossary.js'));
 const DIAGRAMS = require(path.join(root, 'js/diagrams.js'));
@@ -22,11 +23,14 @@ function test(name, fn) {
 
 test('status stays honest about the course', function () {
   assert.equal(STATUS.courseTeachingReviewed, false);
+  assert.equal(STATUS.introductionReviewed, true);
+  assert.equal(STATUS.introductionProvenance, 'Introduction recording reviewed 8 Nov 2026');
   assert.equal(STATUS.recordingsListened, false);
   assert.equal(STATUS.validatedProgramme, false);
   assert.equal(STATUS.draft, true);
   assert.match(STATUS.affiliation, /not affiliated with Unlock Psychology/i);
-  assert.match(STATUS.recordingsNote, /not|no course recording/i);
+  assert.match(STATUS.recordingsNote, /Introduction recording reviewed 8 Nov 2026/);
+  assert.match(STATUS.recordingsNote, /seven module recordings have not been reviewed/i);
   assert.equal(STATUS.base, '/unlock-psychology/');
   assert.equal(STATUS.reviewDate, '8 November 2026');
 });
@@ -107,13 +111,39 @@ test('quizzes score, explain, and navigate', function () {
   });
 });
 
+test('the introduction is the only reviewed course page', function () {
+  assert.equal(INTRO.provenance, 'Introduction recording reviewed 8 Nov 2026');
+  assert.equal(INTRO.status, 'introduction-reviewed');
+  assert.equal(INTRO.reviewedOnly, true);
+  assert.equal(INTRO.reflection.length, 3);
+  assert.match(INTRO.reflection[0].prompt, /assume an ADHD assessment can establish/);
+  assert.match(INTRO.reflection[2].prompt, /what evidence would show progress/);
+  const summary = INTRO.summary.join(' ');
+  assert.match(summary, /does not by itself establish competence or authorisation to diagnose/);
+  assert.match(summary, /not universal legal qualification rules/);
+  assert.equal(summary.includes('1.3.1'), false);
+  assert.match(INTRO.supplement.label, /Independent/);
+  assert.match(INTRO.supplement.text, /1\.3\.1/);
+  assert.match(INTRO.supplement.text, /not a rule supplied by the course introduction/);
+  assert.match(INTRO.boundary, /not a transcript/);
+  const raw = fs.readFileSync(path.join(root, 'js/data/introduction.js'), 'utf8');
+  ['14:03', '2×', '2x playback', 'transcript of'].forEach(function (banned) {
+    assert.equal(raw.includes(banned), false, banned);
+  });
+  COURSE.forEach(function (mod) {
+    assert.equal(JSON.stringify(mod).includes(INTRO.provenance), false);
+  });
+});
+
 test('search finds supplements and keeps course hits labelled', function () {
-  const corpus = Logic.buildCorpus({ course: COURSE, additions: ADDITIONS, glossary: GLOSSARY });
+  const corpus = Logic.buildCorpus({ course: COURSE, additions: ADDITIONS, glossary: GLOSSARY, introduction: INTRO });
   const qb = Logic.search('QbTest', corpus);
   assert.ok(qb.some(function (hit) { return hit.id === 'a-tools' && hit.provenance === 'independent-supplement'; }));
   const report = Logic.search('report writing', corpus);
   assert.ok(report.some(function (hit) { return hit.id === 'c7' && hit.status === 'overview-only'; }));
   assert.ok(report.some(function (hit) { return hit.id === 'a-report'; }));
+  const intro = Logic.search('orientation', corpus);
+  assert.ok(intro.some(function (hit) { return hit.id === 'intro' && hit.status === 'introduction-reviewed'; }));
   const glossary = Logic.search('diversion', corpus);
   assert.ok(glossary.some(function (hit) { return hit.kind === 'glossary'; }));
   assert.deepEqual(Logic.search('a', corpus), []);
@@ -132,10 +162,14 @@ test('progress reset clears read marks and quiz scores', function () {
   store.saveInteraction('ix-map', { matched: true }, '2026-11-08T02:00:00.000Z');
   assert.equal(store.get().read['a-report'], '2026-11-08T00:00:00.000Z');
   assert.equal(store.get().interactions['ix-map'].matched, true);
+  store.saveReflection('intro', { goal: 'Write one defensible formulation.' }, '2026-11-08T03:00:00.000Z');
+  assert.equal(store.get().read['a-report'], '2026-11-08T00:00:00.000Z');
+  assert.equal(store.get().reflections.intro.answers.goal, 'Write one defensible formulation.');
   const cleared = Logic.resetProgress(store);
   assert.deepEqual(cleared.read, {});
   assert.deepEqual(cleared.quizzes, {});
   assert.deepEqual(cleared.interactions, {});
+  assert.deepEqual(cleared.reflections, {});
 });
 
 test('public pages use the project base and do not leak course files', function () {

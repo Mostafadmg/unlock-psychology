@@ -1,4 +1,4 @@
-/* Public status of this draft. Course teaching has not been reviewed. */
+/* Public status of this draft. Only the introduction recording has been reviewed. */
 (function (root, factory) {
   const api = factory();
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
@@ -11,9 +11,11 @@
     draft: true,
     validatedProgramme: false,
     courseTeachingReviewed: false,
+    introductionReviewed: true,
+    introductionProvenance: 'Introduction recording reviewed 8 Nov 2026',
     recordingsListened: false,
     affiliation: 'Independent study companion. Not affiliated with Unlock Psychology, NICE, the NHS, RCPsych, UKAAN, WHO, or any course provider.',
-    recordingsNote: 'No course recording, caption or download was listened to or reviewed. Course lesson summaries are empty on purpose until a verified lesson review is supplied.',
+    recordingsNote: 'Introduction recording reviewed 8 Nov 2026. Only that orientation was reviewed. The seven module recordings have not been reviewed, and their summaries stay empty.',
     adviceNote: 'Education only. This is not personal medical advice, a diagnosis, a prescription, or proof of competence to assess ADHD.'
   };
 });

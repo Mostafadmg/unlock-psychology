@@ -8,7 +8,7 @@
   const STORAGE_KEY = 'adhd-clinical-learning-draft-v1';
 
   function emptyProgress() {
-    return { read: {}, quizzes: {}, interactions: {}, updated: null };
+    return { read: {}, quizzes: {}, interactions: {}, reflections: {}, updated: null };
   }
 
   function memoryStore(initial) {
@@ -21,6 +21,7 @@
           read: Object.assign({}, data.read, { [id]: when }),
           quizzes: data.quizzes,
           interactions: data.interactions,
+          reflections: data.reflections,
           updated: when
         };
       },
@@ -33,6 +34,7 @@
             [id]: { best: Math.max(prev.best || 0, result.percent), last: result.percent, at: when }
           }),
           interactions: data.interactions,
+          reflections: data.reflections,
           updated: when
         };
       },
@@ -43,6 +45,19 @@
           quizzes: data.quizzes,
           interactions: Object.assign({}, data.interactions, {
             [id]: { done: true, matched: !!(record && record.matched), at: when }
+          }),
+          reflections: data.reflections,
+          updated: when
+        };
+      },
+      saveReflection: function (id, answers, at) {
+        const when = at || new Date().toISOString();
+        data = {
+          read: data.read,
+          quizzes: data.quizzes,
+          interactions: data.interactions,
+          reflections: Object.assign({}, data.reflections, {
+            [id]: { answers: answers || {}, at: when }
           }),
           updated: when
         };
@@ -57,6 +72,7 @@
     base.read = raw.read && typeof raw.read === 'object' ? raw.read : {};
     base.quizzes = raw.quizzes && typeof raw.quizzes === 'object' ? raw.quizzes : {};
     base.interactions = raw.interactions && typeof raw.interactions === 'object' ? raw.interactions : {};
+    base.reflections = raw.reflections && typeof raw.reflections === 'object' ? raw.reflections : {};
     base.updated = raw.updated || null;
     return base;
   }
@@ -80,7 +96,19 @@
     const course = input.course || [];
     const additions = input.additions || [];
     const glossary = input.glossary || [];
+    const introduction = input.introduction;
     const items = [];
+    if (introduction) {
+      items.push({
+        id: introduction.id,
+        kind: 'course',
+        title: introduction.title,
+        text: textOf(introduction.summary) + ' ' + textOf(introduction.reflection) + ' ' + introduction.boundary,
+        href: '#/course/intro',
+        provenance: introduction.provenance,
+        status: introduction.status
+      });
+    }
     course.forEach(function (mod) {
       items.push({
         id: mod.id,
