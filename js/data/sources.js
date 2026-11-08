@@ -17,7 +17,7 @@
       title: 'Attention deficit hyperactivity disorder: diagnosis and management',
       href: 'https://www.nice.org.uk/guidance/ng87',
       locator: 'Guideline overview',
-      note: 'Published 14 March 2018. Last updated 13 September 2019. Last reviewed 23 July 2026, with a decision not to update the recommendations on adapted trauma-focused treatment. That review date is not a 2026 rewrite of every recommendation.'
+      note: 'Four dates, kept apart. Overview review date: 23 July 2026, with a decision not to update the recommendations on adapted trauma-focused treatment. Recommendations-page header date: last updated 13 September 2019. Individual recommendation annotations differ, including a [2024] QbTest sentence in 1.3.1 only. Accessed 8 November 2026. Do not call the whole guideline updated in July 2026, and do not infer a new trauma recommendation from that review.'
     }),
     src({
       id: 'ng87-recs',
@@ -26,7 +26,7 @@
       title: 'NG87 recommendations chapter',
       href: 'https://www.nice.org.uk/guidance/ng87/chapter/recommendations',
       locator: 'Full recommendations chapter',
-      note: 'The recommendations page header still says last updated 13 September 2019. Individual recommendations carry their own years, including a 2024 QbTest sentence inside 1.3.1. Historical licensing notes in the chapter are not proof of a medicine’s current marketing authorisation.'
+      note: 'Header date: last updated 13 September 2019. Recommendation 1.3.1 includes a QbTest statement marked [2024]. Recommendation 1.3.3 refers to DSM-5 or ICD-11 and is annotated 2008, amended 2018. Do not infer that the ICD-11 wording was newly amended in 2024 from the QbTest annotation. Historical licensing notes are not a medicine’s current marketing authorisation.'
     }),
     src({
       id: 'ng87-refer',
@@ -44,7 +44,7 @@
       title: 'NG87 recommendations 1.3.1 to 1.3.6',
       href: 'https://www.nice.org.uk/guidance/ng87/chapter/recommendations#diagnosis',
       locator: '1.3.1–1.3.6',
-      note: '1.3.1 includes a 2024 option to use QbTest to help diagnose ADHD in people aged 6 to 17, only as part of the specialist assessment described in that recommendation.'
+      note: '1.3.1 is who may diagnose, the breadth of the assessment, and the [2024] QbTest option for ages 6 to 17 alongside that assessment. 1.3.2 is the rating-scale limit. 1.3.3 is where DSM-5 or ICD-11, impairment, settings, and the onset caveat are stated. The ICD-11 reference is not in 1.3.1.'
     }),
     src({
       id: 'ng87-info',
@@ -53,7 +53,7 @@
       title: 'NG87 recommendations 1.4.3 to 1.4.12',
       href: 'https://www.nice.org.uk/guidance/ng87/chapter/recommendations#information-and-support',
       locator: '1.4.3–1.4.5, 1.4.11',
-      note: 'Driving advice is about symptoms or medication affecting safe driving, not an instruction to notify the DVLA about every diagnosis. Do not generalise DVLA wording to Northern Ireland without checking DVA guidance.'
+      note: '1.4.3 asks for a structured discussion after diagnosis. Its list is topics the discussion could include, tailored to the person, not an identical script. 1.4.4 and 1.4.5 cover information and how it is adapted. Driving advice is about symptoms or medication affecting safe driving, not every diagnosis. Do not generalise DVLA wording to Northern Ireland without checking DVA guidance.'
     }),
     src({
       id: 'ng87-manage',
@@ -89,7 +89,7 @@
       title: 'NG87 recommendations 1.8 and 1.10',
       href: 'https://www.nice.org.uk/guidance/ng87/chapter/recommendations#maintenance-and-monitoring',
       locator: '1.8.1–1.8.5, 1.8.9–1.8.10, 1.8.17–1.8.19, 1.10.1–1.10.3',
-      note: 'Six-monthly pulse and blood pressure checks and the annual specialist review answer different questions. There is no routine annual stop.'
+      note: 'Six-monthly pulse and blood pressure checks and the annual medication review answer different questions. Recommendation 1.10.1 names a healthcare professional with training and expertise in managing ADHD, not necessarily a consultant psychiatrist. That does not remove escalation or shared care. There is no routine annual stop.'
     }),
     src({
       id: 'ng87-service',

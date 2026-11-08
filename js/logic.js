@@ -8,7 +8,7 @@
   const STORAGE_KEY = 'adhd-clinical-learning-draft-v1';
 
   function emptyProgress() {
-    return { read: {}, quizzes: {}, updated: null };
+    return { read: {}, quizzes: {}, interactions: {}, updated: null };
   }
 
   function memoryStore(initial) {
@@ -16,10 +16,12 @@
     return {
       get: function () { return data; },
       markRead: function (id, at) {
+        const when = at || new Date().toISOString();
         data = {
-          read: Object.assign({}, data.read, { [id]: at || new Date().toISOString() }),
+          read: Object.assign({}, data.read, { [id]: when }),
           quizzes: data.quizzes,
-          updated: at || new Date().toISOString()
+          interactions: data.interactions,
+          updated: when
         };
       },
       saveQuiz: function (id, result, at) {
@@ -29,6 +31,18 @@
           read: data.read,
           quizzes: Object.assign({}, data.quizzes, {
             [id]: { best: Math.max(prev.best || 0, result.percent), last: result.percent, at: when }
+          }),
+          interactions: data.interactions,
+          updated: when
+        };
+      },
+      saveInteraction: function (id, record, at) {
+        const when = at || new Date().toISOString();
+        data = {
+          read: data.read,
+          quizzes: data.quizzes,
+          interactions: Object.assign({}, data.interactions, {
+            [id]: { done: true, matched: !!(record && record.matched), at: when }
           }),
           updated: when
         };
@@ -42,6 +56,7 @@
     if (!raw || typeof raw !== 'object') return base;
     base.read = raw.read && typeof raw.read === 'object' ? raw.read : {};
     base.quizzes = raw.quizzes && typeof raw.quizzes === 'object' ? raw.quizzes : {};
+    base.interactions = raw.interactions && typeof raw.interactions === 'object' ? raw.interactions : {};
     base.updated = raw.updated || null;
     return base;
   }
@@ -178,6 +193,53 @@
     return (additions || []).map(function (lesson) { return lesson.id; });
   }
 
+  function moveItem(order, id, delta) {
+    const next = order.slice();
+    const index = next.indexOf(id);
+    const target = index + delta;
+    if (index < 0 || target < 0 || target >= next.length) return next;
+    const held = next[index];
+    next[index] = next[target];
+    next[target] = held;
+    return next;
+  }
+
+  function sequenceCheck(order, expectedIds) {
+    const items = order.map(function (id, index) {
+      return { id: id, index: index, expected: expectedIds.indexOf(id), inPlace: expectedIds[index] === id };
+    });
+    return {
+      allInPlace: items.length > 0 && items.every(function (item) { return item.inPlace; }),
+      items: items,
+      diagnoses: false
+    };
+  }
+
+  function decisionResult(choice) {
+    return {
+      id: choice.id,
+      fit: choice.fit,
+      explain: choice.explain,
+      matched: choice.fit === 'open',
+      diagnoses: false
+    };
+  }
+
+  function evidenceMapCheck(assignments, pieces, conclusion) {
+    const rows = pieces.map(function (piece) {
+      const assigned = assignments ? assignments[piece.id] : null;
+      return { id: piece.id, assigned: assigned || null, expected: piece.lane, matched: assigned === piece.lane };
+    });
+    return {
+      pieces: rows,
+      piecesMatched: rows.filter(function (row) { return row.matched; }).length,
+      conclusionId: conclusion ? conclusion.id : null,
+      overclaims: conclusion ? conclusion.overclaims === true : null,
+      matched: !!(conclusion && conclusion.overclaims === false && rows.every(function (row) { return row.matched; })),
+      diagnoses: false
+    };
+  }
+
   return {
     STORAGE_KEY: STORAGE_KEY,
     emptyProgress: emptyProgress,
@@ -189,6 +251,10 @@
     prevId: prevId,
     scoreQuiz: scoreQuiz,
     courseIsPending: courseIsPending,
-    additionIds: additionIds
+    additionIds: additionIds,
+    moveItem: moveItem,
+    sequenceCheck: sequenceCheck,
+    decisionResult: decisionResult,
+    evidenceMapCheck: evidenceMapCheck
   };
 });

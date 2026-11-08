@@ -207,10 +207,10 @@
       )
     },
     monitor: {
-      alt: 'Three different clocks: pulse and blood pressure every six months, an annual review by someone with ADHD expertise, and growth checks that depend on age. Simplifying the picture does not replace the age-specific NICE table.',
+      alt: 'Three different clocks: pulse and blood pressure every six months, an annual medication review by a healthcare professional with training and expertise in managing ADHD, and growth checks that depend on age. The reviewer is not necessarily a consultant psychiatrist. Simplifying the picture does not replace the NICE table or remove escalation and shared care.',
       svg: frame(
         { id: 'd-mon-t', text: 'Monitoring answers different questions' },
-        { id: 'd-mon-d', text: 'Pulse and blood pressure are checked before and after dose changes and every six months. A specialist reviews medication at least yearly. Height and weight follow the age rules in NG87. One check does not replace another.' },
+        { id: 'd-mon-d', text: 'Pulse and blood pressure are checked before and after dose changes and every six months. A healthcare professional with training and expertise in managing ADHD reviews medication at least yearly. That role is not reserved for a consultant psychiatrist, and it does not remove escalation or shared care. Height and weight follow the age rules in NG87.' },
         node(30, 90, 200, 160, '#e3f4f3', '#0b6664', 'Pulse and BP', 'Each change + 6 months') +
         node(260, 90, 200, 160, '#fff4dc', '#9a6200', 'Annual review', 'Continue, change, or stop') +
         node(490, 90, 200, 160, '#fbe9e4', '#a8432e', 'Growth', 'Follow the age rule') +

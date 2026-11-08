@@ -6,6 +6,10 @@
   const ADDITIONS = window.ADDITIONS.concat(window.ADDITIONS_B);
   const GLOSSARY = window.GLOSSARY;
   const DIAGRAMS = window.DIAGRAMS;
+  const ILLUSTRATIONS = window.ILLUSTRATIONS;
+  const PRACTICE = window.PRACTICE || [];
+  const practiceById = {};
+  PRACTICE.forEach(function (item) { practiceById[item.id] = item; });
   const corpus = L.buildCorpus({ course: COURSE, additions: ADDITIONS, glossary: GLOSSARY });
   const additionIds = L.additionIds(ADDITIONS);
   const byAddition = {};
@@ -172,9 +176,10 @@
 
   function viewHome() {
     return '<p class="kicker">Educational draft · reviewed against public sources on ' + esc(STATUS.reviewDate) + '</p>' +
-      '<section class="hero"><div><p class="draft-flag">Draft scaffold · not a validated programme</p><h1>' + esc(STATUS.title) + '</h1>' +
-      '<p>A study companion for ADHD assessment and diagnosis. The seven course topics are in place. Their lesson summaries are empty until the teaching itself has been reviewed. The pages after them are separate, source-linked explanations.</p></div>' +
-      '<div><p><strong>What this is not</strong></p><p>' + esc(STATUS.affiliation) + '</p><p>' + esc(STATUS.recordingsNote) + '</p></div></section>' +
+      '<div class="hero-wrap"><section class="hero"><div><p class="draft-flag">Draft scaffold · not a validated programme</p><h1>' + esc(STATUS.title) + '</h1>' +
+      '<p>A study companion for ADHD assessment and diagnosis. The seven course topics are in place. Their lesson summaries are empty until the teaching itself has been reviewed. The pages after them are separate, source-linked explanations.</p>' +
+      '<p><strong>What this is not</strong></p><p>' + esc(STATUS.affiliation) + '</p><p>' + esc(STATUS.recordingsNote) + '</p></div></section>' +
+      renderIllustration('hero') + '</div>' +
       '<div class="banner"><strong>Education, not personal medical advice.</strong> ' + esc(STATUS.adviceNote) + ' Completing these pages does not qualify anyone to assess or prescribe.</div>' +
       '<h2>How to read the labels</h2><div class="legend">' +
       '<span class="pill warn">Overview only</span><span class="pill coral">Course summary pending</span><span class="pill">Independent supplement</span><span class="pill navy">Educational draft</span></div>' +
@@ -217,6 +222,7 @@
       '<div class="objectives"><strong>By the end of this draft page you can</strong><ul>' +
       lesson.objectives.map(function (item) { return '<li>' + esc(item) + '</li>'; }).join('') + '</ul></div>' +
       lesson.blocks.map(renderBlock).join('') +
+      renderPractices(lesson) +
       renderEvidence(lesson) +
       renderCards(lesson) +
       renderQuiz(lesson) +
@@ -240,6 +246,7 @@
       }).join('') + '</div>';
     }
     if (block.type === 'diagram') return renderDiagram(block.id);
+    if (block.type === 'illustration') return renderIllustration(block.id);
     if (block.type === 'vignette') {
       return '<article class="vignette"><header><p class="tag" style="color:#f2a541">Fictional vignette</p><p><strong>' + esc(block.title) + '</strong></p></header><div class="body"><p>' + esc(block.text) + '</p></div></article>';
     }
@@ -264,12 +271,54 @@
     return '<figure class="diagram"><div>' + diagram.svg + '</div><figcaption>' + esc(diagram.alt) + '</figcaption></figure>';
   }
 
+  function renderIllustration(id) {
+    const art = ILLUSTRATIONS[id];
+    if (!art) return '';
+    return '<figure class="illustration" data-illustration="' + esc(id) + '">' +
+      '<img src="' + esc(STATUS.base + 'media/' + art.file) + '" width="' + art.width + '" height="' + art.height + '" alt="' + esc(art.alt) + '" decoding="async">' +
+      '<figcaption><p class="disclosure">' + esc(art.disclosure) + '</p><p>' + esc(art.claim) + '</p>' +
+      '<p class="tag">Labels for what is visible. The picture contains no words.</p><ol>' +
+      art.labels.map(function (label) {
+        return '<li><strong>' + esc(label.title) + '.</strong> ' + esc(label.text) + '</li>';
+      }).join('') + '</ol></figcaption></figure>';
+  }
+
   function renderEvidence(lesson) {
-    return '<section class="evidence"><h2>Evidence drawer</h2><p>Each claim names its authority. “Teaching synthesis” is an explanation, not a recommendation.</p>' +
+    return '<section class="evidence"><h2>Source drawers</h2><p>Open a claim to see its authority and its limit. “Teaching synthesis” is an explanation, not a recommendation. The pictures on this site are not sources.</p>' +
       lesson.evidence.map(function (item) {
         const src = source(item.source);
-        return '<article><p><span class="pill">' + esc(item.grade) + ' · ' + esc(gradeName(item.grade)) + '</span></p><p>' + esc(item.claim) + '</p><p class="src"><a href="' + esc(src.href) + '">' + esc(src.short) + '</a> · ' + esc(item.locator) + ' · accessed ' + esc(src.accessed) + '</p><p class="src">Limit: ' + esc(item.limit) + '</p></article>';
+        return '<details class="drawer"><summary><span class="pill">' + esc(item.grade) + ' · ' + esc(gradeName(item.grade)) + '</span> ' + esc(item.claim) + '</summary><div class="drawer-body"><p class="src"><a href="' + esc(src.href) + '">' + esc(src.short) + '</a> · ' + esc(item.locator) + ' · accessed ' + esc(src.accessed) + '</p><p class="src">Limit: ' + esc(item.limit) + '</p></div></details>';
       }).join('') + '</section>';
+  }
+
+  function renderPractices(lesson) {
+    return PRACTICE.filter(function (item) { return item.lesson === lesson.id; }).map(renderPractice).join('');
+  }
+
+  function renderPractice(item) {
+    const saved = store.get().interactions[item.id];
+    let body = '';
+    if (item.kind === 'decide') {
+      body = '<div class="opts" role="radiogroup" aria-label="' + esc(item.title) + '">' + item.choices.map(function (choice) {
+        return '<button class="opt" type="button" role="radio" aria-checked="false" data-choice="' + esc(choice.id) + '">' + esc(choice.label) + '</button>';
+      }).join('') + '</div>';
+    } else if (item.kind === 'sequence') {
+      body = '<ol class="seq" data-seq></ol><button class="btn" type="button" data-seq-check>Check this order</button>';
+    } else if (item.kind === 'compare') {
+      body = '<div class="tabs" role="tablist" aria-label="' + esc(item.title) + '">' + item.panes.map(function (pane, index) {
+        return '<button type="button" role="tab" id="tab-' + esc(item.id) + '-' + esc(pane.id) + '" aria-controls="panel-' + esc(item.id) + '" aria-selected="' + (index === 0 ? 'true' : 'false') + '" tabindex="' + (index === 0 ? '0' : '-1') + '" data-pane="' + esc(pane.id) + '">' + esc(pane.label) + '</button>';
+      }).join('') + '</div><div class="expl" role="tabpanel" id="panel-' + esc(item.id) + '" data-pane-body></div>';
+    } else if (item.kind === 'map') {
+      body = item.pieces.map(function (piece) {
+        return '<fieldset class="map-piece"><legend>' + esc(piece.text) + '</legend>' + item.lanes.map(function (lane) {
+          return '<label class="lane"><input type="radio" name="' + esc(item.id + '-' + piece.id) + '" value="' + esc(lane.id) + '"> ' + esc(lane.label) + '</label>';
+        }).join('') + '</fieldset>';
+      }).join('') + '<fieldset class="map-piece"><legend>Which statement fits without overclaiming?</legend>' + item.conclusions.map(function (conclusion) {
+        return '<label class="lane"><input type="radio" name="' + esc(item.id) + '-conclusion" value="' + esc(conclusion.id) + '"> ' + esc(conclusion.label) + '</label>';
+      }).join('') + '</fieldset><button class="btn" type="button" data-map-check>Check this map</button>';
+    }
+    return '<section class="ix panel" data-ix="' + esc(item.id) + '" data-kind="' + esc(item.kind) + '"><p class="pill warn">Practice · not a diagnosis</p><h2>' + esc(item.title) + '</h2><p>' + esc(item.prompt) + '</p><p class="src">' + esc(item.note) + '</p>' +
+      body + '<div data-ix-live aria-live="polite">' + (saved ? '<p class="src">Opened on this browser. You can try it again. It still does not diagnose anyone.</p>' : '') + '</div></section>';
   }
 
   function renderCards(lesson) {
@@ -307,7 +356,8 @@
 
   function viewSources() {
     return '<p class="kicker">Checked ' + esc(STATUS.reviewDate) + '</p><h1>Sources and status</h1>' +
-      '<div class="banner"><strong>Currency.</strong> The NG87 overview was last reviewed on 23 July 2026, with a decision not to update the recommendations on adapted trauma-focused treatment. The recommendations chapter still shows a last update of 13 September 2019. Recommendation 1.3.1 also contains a 2024 QbTest sentence. HTG729 was published on 21 October 2024. Do not describe every recommendation as 2026 evidence. Licensing notes inside NG87 are historical.</div>' +
+      '<div class="banner"><strong>Currency.</strong> The NG87 overview was last reviewed on 23 July 2026, with a decision not to update the recommendations on adapted trauma-focused treatment. The recommendations chapter header was last updated on 13 September 2019. Recommendation 1.3.1 includes a QbTest statement marked [2024]. Recommendation 1.3.3 refers to DSM-5 or ICD-11. Do not infer that the ICD-11 wording was newly amended in 2024. HTG729 was published on 21 October 2024. Licensing notes inside NG87 are historical.</div>' +
+      '<div class="banner"><strong>Pictures.</strong> Three original illustrations are conceptual art. Each one is labelled “AI-generated conceptual illustration; not clinical evidence.” They are not verified lesson teaching, not a biological mechanism, and not a diagnostic rule. Diagrams and the practice exercises carry the teaching.</div>' +
       '<div class="banner"><strong>Status of this site.</strong> ' + esc(STATUS.recordingsNote) + ' ' + esc(STATUS.affiliation) + ' Specialist review is still required. This is not accredited training.</div>' +
       '<p>NICE pathways are not identical in every UK nation. Right to Choose wording on the NHS page is about England. Shared care, medicine availability and product licences were not re-audited as a formulary.</p>' +
       SOURCES.list.map(function (item) {
@@ -321,10 +371,13 @@
     const rows = ADDITIONS.map(function (lesson) {
       const read = data.read[lesson.id];
       const quiz = data.quizzes[lesson.id];
-      return '<tr><td>' + esc(lesson.title) + '</td><td>' + (read ? 'Read' : 'Not marked') + '</td><td>' + (quiz ? quiz.best + '%' : '—') + '</td></tr>';
+      const related = PRACTICE.filter(function (item) { return item.lesson === lesson.id; });
+      const opened = related.filter(function (item) { return data.interactions[item.id]; }).length;
+      const practiceCell = related.length ? opened + ' of ' + related.length + ' opened' : '—';
+      return '<tr><td>' + esc(lesson.title) + '</td><td>' + (read ? 'Read' : 'Not marked') + '</td><td>' + (quiz ? quiz.best + '%' : '—') + '</td><td>' + practiceCell + '</td></tr>';
     }).join('');
-    return '<h1>Progress on this browser</h1><p>Stored locally under a draft key. Nothing is sent to a server. Course lessons cannot be marked complete, because they have no reviewed summary.</p>' +
-      '<div class="table-wrap"><table><caption>Addition progress</caption><thead><tr><th scope="col">Addition</th><th scope="col">Read</th><th scope="col">Best quiz</th></tr></thead><tbody>' +
+    return '<h1>Progress on this browser</h1><p>Stored locally under a draft key. Nothing is sent to a server. Course lessons cannot be marked complete, because they have no reviewed summary. Practice marks mean an exercise was opened. They are not a diagnosis.</p>' +
+      '<div class="table-wrap"><table><caption>Addition progress</caption><thead><tr><th scope="col">Addition</th><th scope="col">Read</th><th scope="col">Best quiz</th><th scope="col">Practice</th></tr></thead><tbody>' +
       rows + '</tbody></table></div><button class="btn danger" type="button" id="reset">Reset local progress</button>' + foot();
   }
 
@@ -347,7 +400,7 @@
   }
 
   function foot() {
-    return '<footer class="note"><p>' + esc(STATUS.affiliation) + ' ' + esc(STATUS.adviceNote) + ' Keyboard: / focuses search, Escape closes the menu, Tab moves through the page, arrow keys move inside a quiz group.</p></footer>';
+    return '<footer class="note"><p>' + esc(STATUS.affiliation) + ' ' + esc(STATUS.adviceNote) + ' Keyboard: / focuses search, Escape closes the menu, Tab moves through the page, arrow keys move inside a quiz, a comparison or a sequence.</p></footer>';
   }
 
   function bind(root) {
@@ -361,6 +414,7 @@
     }
     bindDeck(root);
     bindQuiz(root);
+    bindPractices(root);
     const reset = root.querySelector('#reset');
     if (reset) {
       reset.addEventListener('click', function () {
@@ -512,6 +566,154 @@
         state.locked = false;
         paintQuiz();
       });
+    });
+  }
+
+  function bindPractices(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('[data-ix]'), function (box) {
+      const item = practiceById[box.getAttribute('data-ix')];
+      if (!item) return;
+      if (item.kind === 'decide') bindDecide(box, item);
+      if (item.kind === 'sequence') bindSequence(box, item);
+      if (item.kind === 'compare') bindCompare(box, item);
+      if (item.kind === 'map') bindMap(box, item);
+    });
+  }
+
+  function writePractice(item, result, html) {
+    const live = document.querySelector('[data-ix="' + item.id + '"] [data-ix-live]');
+    if (live) live.innerHTML = html + '<p class="src">This exercise does not diagnose anyone.</p>';
+    store.saveInteraction(item.id, result);
+    persist();
+  }
+
+  function bindDecide(box, item) {
+    const group = box.querySelector('[role="radiogroup"]');
+    function choose(id) {
+      const choice = item.choices.filter(function (entry) { return entry.id === id; })[0];
+      if (!choice) return;
+      const result = L.decisionResult(choice);
+      Array.prototype.forEach.call(group.querySelectorAll('[data-choice]'), function (button) {
+        const on = button.getAttribute('data-choice') === id;
+        button.setAttribute('aria-checked', on ? 'true' : 'false');
+        button.classList.toggle('correct', on && result.matched);
+        button.classList.toggle('wrong', on && !result.matched);
+      });
+      writePractice(item, result, '<p><strong>' + (result.matched ? 'That keeps the question in proportion.' : 'That goes further than the source.') + '</strong> ' + esc(result.explain) + '</p>');
+    }
+    Array.prototype.forEach.call(group.querySelectorAll('[data-choice]'), function (button) {
+      button.addEventListener('click', function () { choose(button.getAttribute('data-choice')); });
+    });
+    group.addEventListener('keydown', function (event) {
+      const buttons = Array.prototype.slice.call(group.querySelectorAll('[data-choice]'));
+      const current = buttons.findIndex(function (button) { return button.getAttribute('aria-checked') === 'true'; });
+      let next = current;
+      if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = Math.min(buttons.length - 1, Math.max(0, current) + 1);
+      if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = Math.max(0, (current < 0 ? 1 : current) - 1);
+      if (next !== current && next >= 0) {
+        event.preventDefault();
+        choose(buttons[next].getAttribute('data-choice'));
+        buttons[next].focus();
+      }
+    });
+  }
+
+  function bindSequence(box, item) {
+    let order = item.initial.slice();
+    const list = box.querySelector('[data-seq]');
+    function paint(focusId) {
+      list.innerHTML = order.map(function (id, index) {
+        const step = item.steps.filter(function (entry) { return entry.id === id; })[0];
+        return '<li class="seq-row"><span id="step-label-' + esc(item.id) + '-' + esc(id) + '">' + (index + 1) + '. ' + esc(step.label) + '</span><span class="seq-moves"><button type="button" data-move="-1" data-step="' + esc(id) + '" aria-label="Move up: ' + esc(step.label) + '">Up</button><button type="button" data-move="1" data-step="' + esc(id) + '" aria-label="Move down: ' + esc(step.label) + '">Down</button></span></li>';
+      }).join('');
+      Array.prototype.forEach.call(list.querySelectorAll('[data-move]'), function (button) {
+        button.addEventListener('click', function () {
+          const id = button.getAttribute('data-step');
+          order = L.moveItem(order, id, Number(button.getAttribute('data-move')));
+          paint(id + ':' + button.getAttribute('data-move'));
+        });
+      });
+      if (focusId) {
+        const parts = focusId.split(':');
+        const again = list.querySelector('[data-step="' + parts[0] + '"][data-move="' + parts[1] + '"]');
+        if (again) again.focus();
+      }
+    }
+    list.addEventListener('keydown', function (event) {
+      const button = event.target.closest('[data-step]');
+      if (!button) return;
+      if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+        event.preventDefault();
+        const id = button.getAttribute('data-step');
+        order = L.moveItem(order, id, event.key === 'ArrowUp' ? -1 : 1);
+        paint(id + ':' + button.getAttribute('data-move'));
+      }
+    });
+    box.querySelector('[data-seq-check]').addEventListener('click', function () {
+      const result = L.sequenceCheck(order, item.expected);
+      const lines = result.items.map(function (row) {
+        const step = item.steps.filter(function (entry) { return entry.id === row.id; })[0];
+        return '<li>' + esc(step.label) + (row.inPlace ? ' is in the teaching place.' : ' is still somewhere else in the teaching order.') + '</li>';
+      }).join('');
+      writePractice(item, { matched: result.allInPlace, diagnoses: false }, '<p><strong>' + (result.allInPlace ? 'That matches the teaching order.' : 'Some moves are still out of the teaching order.') + '</strong></p><ul>' + lines + '</ul>');
+    });
+    paint(null);
+  }
+
+  function bindCompare(box, item) {
+    const tabs = Array.prototype.slice.call(box.querySelectorAll('[role="tab"]'));
+    const panel = box.querySelector('[data-pane-body]');
+    const seen = {};
+    function show(id, focus, save) {
+      const pane = item.panes.filter(function (entry) { return entry.id === id; })[0];
+      tabs.forEach(function (tab) {
+        const on = tab.getAttribute('data-pane') === id;
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.tabIndex = on ? 0 : -1;
+        if (on && focus) tab.focus();
+      });
+      panel.innerHTML = '<p>' + esc(pane.text) + '</p>';
+      if (!save) return;
+      seen[id] = true;
+      const all = item.panes.every(function (entry) { return seen[entry.id]; });
+      writePractice(item, { matched: all, diagnoses: false }, '<p>' + (all ? 'You have opened every reading. They can sit together. None of them is a diagnosis.' : 'Open the other readings before treating one of them as the whole story.') + '</p>');
+    }
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener('click', function () { show(tab.getAttribute('data-pane'), false, true); });
+      tab.addEventListener('keydown', function (event) {
+        if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft' && event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+        event.preventDefault();
+        const delta = (event.key === 'ArrowRight' || event.key === 'ArrowDown') ? 1 : -1;
+        const next = tabs[(index + delta + tabs.length) % tabs.length];
+        show(next.getAttribute('data-pane'), true, true);
+      });
+    });
+    show(item.panes[0].id, false, false);
+  }
+
+  function bindMap(box, item) {
+    box.querySelector('[data-map-check]').addEventListener('click', function () {
+      const assignments = {};
+      let missing = false;
+      item.pieces.forEach(function (piece) {
+        const picked = box.querySelector('input[name="' + item.id + '-' + piece.id + '"]:checked');
+        if (!picked) missing = true;
+        else assignments[piece.id] = picked.value;
+      });
+      const pickedConclusion = box.querySelector('input[name="' + item.id + '-conclusion"]:checked');
+      if (!pickedConclusion) missing = true;
+      const live = box.querySelector('[data-ix-live]');
+      if (missing) {
+        live.innerHTML = '<p>Choose a lane for every fragment, and choose one statement, before checking.</p><p class="src">This exercise does not diagnose anyone.</p>';
+        return;
+      }
+      const conclusion = item.conclusions.filter(function (entry) { return entry.id === pickedConclusion.value; })[0];
+      const result = L.evidenceMapCheck(assignments, item.pieces, conclusion);
+      const lines = result.pieces.map(function (row) {
+        const piece = item.pieces.filter(function (entry) { return entry.id === row.id; })[0];
+        return '<li>' + esc(piece.text) + (row.matched ? ' matches the teaching lane.' : ' is in a different lane from the teaching key.') + '</li>';
+      }).join('');
+      writePractice(item, result, '<p><strong>' + esc(conclusion.explain) + '</strong></p><ul>' + lines + '</ul><p>' + (result.overclaims ? 'The statement overclaims what these fragments can show.' : 'The statement stays inside what these fragments can show.') + '</p>');
     });
   }
 

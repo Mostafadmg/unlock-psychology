@@ -31,7 +31,8 @@
         'Keep “two settings” for diagnosis apart from “one domain” for a medication offer'
       ],
       blocks: [
-        { type: 'p', text: 'ADHD is a developmental diagnosis, so the history is a timeline rather than a snapshot of the worst month. AQAS recommends seeking informants where possible: ideally someone who knew the person in childhood and someone who knows current functioning, plus available school and health records. It also asks the clinician to explore missing or contradictory evidence and to write down what that does to the conclusion.' },
+        { type: 'illustration', id: 'developmental' },
+        { type: 'p', text: 'ADHD is a developmental diagnosis, so the history is a timeline rather than a snapshot of the worst month. The picture shows three contexts side by side. It is not one life, and it is not evidence. AQAS recommends seeking informants where possible: ideally someone who knew the person in childhood and someone who knows current functioning, plus available school and health records. It also asks the clinician to explore missing or contradictory evidence and to write down what that does to the conclusion. The timeline diagram below is the study aid. The picture is only a way in.' },
         { type: 'diagram', id: 'timeline' },
         { type: 'p', text: 'Ask what the person could do alone and what another person organised. A school report that says “no disruption” does not prove there was no inattention. A supportive informant is not infallible either. Check what they saw, what the expectations were, and how memory works across decades. Never contact an unsafe relative in order to complete a form. If collateral cannot be obtained, use other lawful sources, document the limit, and take supervision if the uncertainty is material.' },
         { type: 'callout', kind: 'note', title: 'Achievement is not a verdict', text: 'High academic or occupational success should not by itself exclude ADHD. Impairment can sit in another part of life, and compensation can have a cost. Success is also not hidden proof of ADHD. The cost and the impairment have to be asked about directly. AQAS makes the first of those points. The second is the matching caution: do not fill a successful record with a diagnosis the evidence does not hold.' },
@@ -284,37 +285,51 @@
     {
       id: 'a-report',
       title: 'Formulation, the report and feedback',
-      minutes: 12,
+      minutes: 28,
       diagram: 'report-chain',
       objectives: [
-        'Map each conclusion back to evidence, alternatives and limits',
-        'Write a positive, negative or uncertain outcome in plain language',
-        'See an original fictional report without treating it as a template to copy'
+        'Map each conclusion to supporting, conflicting and missing evidence',
+        'Say whether a criterion was evaluated and not met, or could not be evaluated',
+        'Tailor feedback topics instead of reading out one universal script',
+        'Read an unfinished fictional excerpt without treating it as a template'
       ],
       blocks: [
-        { type: 'p', text: 'The course topic “report writing” has not been reviewed. This page is an independent supplement. It does not use a provider template. AQAS says a good adult report contains real-life examples, the evidence against alternative explanations, a mapping onto the criteria used, what informants and records added, comorbidity, a formulation and a diagnostic outcome. Contradictory or missing information should not be hidden. Length and a pile of generic appendices are not quality.' },
+        { type: 'p', text: 'The course topic “report writing” has not been reviewed. This page is an independent supplement. It does not use a provider template. A report should let another clinician see real-life examples, a mapping onto the criteria used, what informants and records added, comorbidity, a formulation and an outcome. Weigh evidence for and against alternative explanations, including supporting, conflicting and missing evidence, and say how each contributes to impairment. Coexisting conditions can be real. Contradictory or missing information should not be hidden, and missing information is not a negative criterion. Length and a pile of generic appendices are not quality.' },
         { type: 'diagram', id: 'report-chain' },
-        { type: 'h', text: 'A formulation skeleton' },
-        { type: 'p', text: 'This skeleton is a teaching synthesis, not a validated test and not proof of a biological mechanism. Why now? What are the enduring vulnerabilities and the developmental course? What demands and supports maintain the problem? Which symptoms and impairments are specific? Which alternatives and coexisting conditions were tested? What protects the person? What conclusion is best supported, and what is still uncertain? What plan is shared?' },
-        { type: 'p', text: 'After a diagnosis, NG87 1.4.3 asks for a structured discussion: understanding, strengths, stigma and labelling, environmental modifications, education and employment, relationships, coexisting conditions, substance misuse and self-medication, and driving. People whose symptoms and impairment fall short of diagnosis may still benefit from information (1.4.4).' },
+        { type: 'h', text: 'Write the reasoning, not just the result' },
+        { type: 'p', text: 'The chain diagram is the study aid. It is a teaching synthesis, labelled T, not an evidence hierarchy and not a diagnostic stamp. Six questions keep a paragraph honest: what supports this part; what conflicts with it; what is missing; which criterion that affects; what was done about safety; what the person will actually be offered next.' },
+        { type: 'table', caption: 'Teaching map for a report paragraph. It is not a score and not a code.', headers: ['Question', 'What to write', 'Label'], rows: [
+          ['What supports this?', 'Examples, from whom, in which setting, with what impairment.', 'T, using C for the expectation that examples are shown'],
+          ['What conflicts?', 'Evidence for another explanation, or a source that disagrees. Do not delete it.', 'C'],
+          ['What is missing?', 'Name the gap. Do not convert it into “criterion not met”.', 'T'],
+          ['Which criterion does that affect?', 'Say whether it was evaluated and not met, or could not be evaluated.', 'T. Not a diagnostic code'],
+          ['What about safety?', 'Context, history, protection, uncertainty and the action. Not “no risk”.', 'T, alongside the safety assessment AQAS expects'],
+          ['What happens next?', 'A shared plan matched to the needs you actually found.', 'G for feedback topics that could be included; T for the wording']
+        ] },
+        { type: 'h', text: 'Feedback is tailored' },
+        { type: 'p', text: 'After a diagnosis, NG87 1.4.3 asks for a structured discussion tailored to the person. Topics the discussion could include are understanding, strengths, stigma and labelling, environmental modifications, education and employment, relationships, coexisting conditions, substance misuse and self-medication, and driving. That list is not a mandatory identical script. Use the topics that inform this person’s plan. Information and how it is adapted, in 1.4.4 and 1.4.5, are separate. People whose symptoms and impairment fall short of diagnosis may still benefit from similar information.' },
         { type: 'callout', kind: 'note', title: 'Words that keep the relationship', text: '“Your difficulties are real. The task is to explain them accurately, not to judge effort. Here is what supports the conclusion, what is uncertain, and what we can do next.” If the result is inconclusive: “We do not yet have enough evidence to decide safely. Here is what is missing, and here is a proportionate next step.” Never say a positive screen proves the diagnosis, or that a non-diagnosis means there is no need for support.' },
         { type: 'h', text: 'Fictional report, for study only' },
         { type: 'callout', kind: 'warn', title: 'Do not copy this into a record', text: 'Jordan Hale is invented. The report shows a reasoning chain. It is not a patient, not a form, and not the course’s report template. Copying the sentences into real notes would fake a history.' },
         { type: 'p', text: 'Jordan Hale, age 34, fictional. Referred by a GP in England because of missed deadlines and strain at home. Seen for a direct assessment, with consent to speak to a partner who has known Jordan for six years. No school reports survive. A younger sibling, contacted with consent, remembers primary-school lost homework and a parent who packed the school bag every morning. Jordan describes current examples at work and at home: unfinished routine reports unless a colleague sets a same-day deadline, unpaid bills despite enough income, and a partner who now runs the household calendar. Hobbies that are fast and rewarding can hold attention for hours. Sleep is adequate. There is no regular substance use. Mood is frustrated, not pervasively low, and there is no episode of reduced need for sleep with elevated energy. There is no history suggestive of seizures or a new neurological illness. Thoughts of self-harm are absent today. Driving is not currently described as unsafe.' },
-        { type: 'p', text: 'Teaching conclusion, not a real diagnosis: using the ICD-11 clinical description, the account supports a long pattern of impairing inattention from childhood, across home and work, with hyperactivity now mainly an inner restlessness. The partner cannot speak to childhood. The missing school file is a limit, not a contradiction of the sibling’s examples, and not proof of them. Depression, a substance explanation and a new neurological illness do not better explain the lifespan. Uncertainty remains about the exact classroom picture. For this exercise the outcome category is “criteria supported, with that limit recorded”. A different reader might still ask for one more childhood source. That disagreement should be written, not smoothed away.' },
+        { type: 'p', text: 'Teaching conclusion, not a real diagnosis and not a code: in this exercise the developmental pattern was evaluated from two accounts and judged to fit the clinical description used here. The partner cannot speak to childhood. The missing school file is a limit on certainty. It is not a contradiction of the sibling’s examples, not proof of them, and not a negative criterion. Depression, a substance explanation and a new neurological illness were considered and, on this fictional account, do not better explain the lifespan; that is evidence weighed for and against alternatives, not a hunt only for evidence against. “Criteria supported” is a teaching label for a pattern that was evaluated. It is not a diagnostic code. A different reader might still ask for one more childhood source. Write that disagreement down.' },
         { type: 'p', text: 'Teaching recommendations, not a prescription: explain the conclusion in the words of 1.4.3, including strengths and stigma. Consider environmental changes at work, such as written instructions and shorter blocks of focus, recognising these as examples from NICE’s definition of environmental modifications, not a workplace law lesson. A specialist with expertise in ADHD can discuss the adult treatment recommendations in NG87, including when medication is offered. No drug and no dose are chosen here. Agree follow-up and what to do if risk changes.' },
         { type: 'p', text: 'Patient-facing note, fictional: “The problems at work and at home are real, and they are not a verdict on your effort. The history from you and your sibling supports a longstanding attention pattern that still has a cost. We do not have the school file, so that part is less certain. We can talk about changes at work, and about treatment options, without pretending a questionnaire made the decision.”' },
+        { type: 'h', text: 'Fictional unfinished excerpt: Sam' },
+        { type: 'callout', kind: 'warn', title: 'Not a completed diagnosis and not a template', text: 'Sam is invented. The excerpt stops on purpose. Copying it into a record would invent a history. It is not the course’s report and it is not a form to finish by changing the name.' },
+        { type: 'vignette', title: 'Fictional unfinished excerpt', text: 'Sam, a fictional adult, wants help with missed routine deadlines and conflict over household responsibilities. This interim account uses a direct consultation and, with permission, a partner’s account of current life. Sam agreed those sources could inform feedback. Sharing a report more widely has not been agreed. Childhood records were requested and have not arrived. The intended framework is ICD-11. The developmental requirements cannot yet be evaluated adequately. Sam describes unfinished administrative tasks over several years, late-payment charges and repeated work reminders. The partner has taken over household scheduling. Structured shifts go better. That does not confirm or refute ADHD. Sam recalls losing equipment at primary school but gives little detail. Recent insomnia and worry may be contributing. No anxiety diagnosis is made here, and the psychiatric, developmental and physical review is incomplete. Sam reports no current self-harm thoughts. That is not a conclusion of no risk. Past self-harm, substances and safeguarding are still to be asked about. No medication-readiness conclusion is possible. The available evidence is not enough for an ADHD diagnosis. Support for the current problems can still be discussed, including written task instructions, without treating those ideas as proof.' },
         { type: 'recap', items: [
-          'Every conclusion should be traceable to examples, records, alternatives and gaps.',
-          'Hide nothing that conflicts.',
-          'Feedback is owed whether or not the criteria are met.',
-          'A fictional report is a lesson, not a template.'
+          'Weigh evidence for and against alternatives, and record what is missing.',
+          'Say whether a criterion was evaluated and not met, or could not be evaluated.',
+          'Feedback topics could include the NICE list. Tailor them. Do not recite one script.',
+          '“No current suicidal thoughts” is not “no risk”.',
+          'A fictional excerpt is a lesson, not a template.'
         ] }
       ],
       evidence: [
-        { claim: 'Reports should show examples, evidence against alternatives, criterion mapping, informant and record contributions, comorbidity, formulation and outcome. Missing and contradictory data are not concealed. Length is not quality.', grade: 'C', source: 'aqas', locator: '3.2', limit: 'Adult consensus. The Jordan Hale text is original fiction, not an AQAS sample.' },
-        { claim: 'After diagnosis, hold a structured discussion covering understanding, strengths, stigma, environmental modifications, education and work, relationships, coexisting conditions, substances and driving. Offer similar information if the assessment falls short of diagnosis.', grade: 'G', source: 'ng87-info', locator: '1.4.3–1.4.4', limit: 'The discussion informs the shared plan. It is not a script that must be worded as NICE wrote the bullets.' },
-        { claim: 'The formulation order used above is a teaching synthesis.', grade: 'T', source: 'teaching', locator: 'Not a validated tool', limit: 'It does not prove a mechanism and it must not be scored.' }
+        { claim: 'A good adult report shows examples, reasoned consideration of alternative and coexisting explanations, criterion mapping, what informants and records contributed, comorbidity, formulation and outcome. Supporting, conflicting and missing evidence stay visible. Length is not quality.', grade: 'C', source: 'aqas', locator: '3.2', limit: 'Adult consensus. Jordan Hale and Sam are original fiction, not AQAS samples. Outcome labels on this page are teaching categories, not codes.' },
+        { claim: 'After diagnosis, hold a structured discussion tailored to the person. Topics could include understanding, strengths, stigma, environmental modifications, education and work, relationships, coexisting conditions, substances and driving. Offer information if the assessment falls short, and adapt how it is given.', grade: 'G', source: 'ng87-info', locator: '1.4.3–1.4.5', limit: '“Could include” is not an identical script. 1.4.4 and 1.4.5 are separate from the topic list. Education-setting consent in NG87 is not a full consent law.' },
+        { claim: 'The six-question report map and the chain diagram are a teaching synthesis.', grade: 'T', source: 'teaching', locator: 'Not a validated tool', limit: 'They do not prove a mechanism, they are not a diagnostic stamp, and they must not be scored.' }
       ],
       quiz: [
         q('a-report-1', 'School records contradict the person’s account. Can the report omit them?',
@@ -340,11 +355,29 @@
           'b',
           'The example is original fiction for study. A real report has to contain that person’s examples, gaps and outcome. AQAS is about the elements of quality, not about cloning a paragraph.',
           { a: 'Changing the name would still copy a life that did not happen.', c: 'The formulation is part of what AQAS expects. The ban is on copying the fiction, not on formulating.' },
-          ['aqas', 'teaching'])
+          ['aqas', 'teaching']),
+        q('a-report-5', 'School records were requested and have not arrived. Can the report say ADHD is excluded for that reason?',
+          opts(['Yes. No records means the developmental criterion is negative.', 'No. Missing records are a limitation. Say the criterion could not be evaluated adequately, unless other evidence actually settles it.', 'Yes, if the person also has a high rating scale.']),
+          'b',
+          'Missing information is not a negative criterion. NICE 1.3.3 also advises against excluding solely because the time of onset is uncertain. A scale cannot fill the file.',
+          { a: '“Not assessed” and “assessed and not met” are different sentences.', c: 'NG87 1.3.2 forbids diagnosis from a scale, and it does not allow a scale to create an exclusion either.' },
+          ['ng87-diag', 'aqas']),
+        q('a-report-6', 'The person reports no current suicidal intent. Is “no risk” an adequate line?',
+          opts(['Yes. The denial closes the safety section.', 'No. Record the context, history still needed, protective factors, uncertainty, and what you will do. Absence of intent today is not a clearance.', 'Yes, if ADHD is also diagnosed, because the diagnosis contains the risk assessment.']),
+          'b',
+          'A safety note names what was asked, what is unknown, and the action. It is not a predictive formula, and an ADHD conclusion does not replace it.',
+          { a: 'One denial does not review past harm, substances or safeguarding.', c: 'Diagnosis and risk are different assessments. A label does not answer the safety questions.' },
+          ['aqas', 'teaching']),
+        q('a-report-7', 'Must every diagnosed person hear the same feedback script?',
+          opts(['Yes. NG87 1.4.3 is a mandatory wording to read aloud in full.', 'No. Hold a structured discussion and use the topics that could be included when they matter for that person.', 'No feedback is needed if the person already read a leaflet.']),
+          'b',
+          'The recommendation lists topics the discussion could include. Tailoring is the point. A leaflet does not replace the discussion, and 1.4.4 and 1.4.5 still cover information and how it is adapted.',
+          { a: '“Could include” is not an identical script.', c: 'Information still has to be discussed and adapted. A leaflet is not the whole recommendation.' },
+          ['ng87-info'])
       ],
       cards: [
-        { front: 'What should a reader be able to do with the report?', back: 'See why the conclusion was reached, including the evidence that does not fit and the information that is missing.' },
-        { front: 'Name four AQAS report ingredients.', back: 'Real-life examples, the case against alternatives, criterion mapping, and what informants or records contributed. Also comorbidity, formulation and outcome.' },
+        { front: 'What should a reader be able to do with the report?', back: 'See why the conclusion was reached, including supporting, conflicting and missing evidence, and which criterion each piece affects.' },
+        { front: 'What does a report weigh about alternatives?', back: 'Evidence for and against them, including comorbidity. Not only a paragraph of evidence against.' },
         { front: 'What if criteria are not met?', back: 'Say so clearly, and still consider information and support. A non-diagnosis is not “no problem”.' },
         { front: 'What is the Jordan Hale piece for?', back: 'To practise following an evidence chain. Not for copying into a clinical record. Not a provider template.' }
       ]
@@ -441,7 +474,7 @@
           ['Pulse and blood pressure', 'Before and after each dose change, and every six months, compared with the normal range for age.', '1.8.9'],
           ['Height and weight', 'Height every six months in children and young people. Weight every three months at age 10 and under. Over 10, and in young people: at three and six months, then every six months, or more often if there is concern. Adults: weight every six months. Plot children’s growth.', '1.8.5'],
           ['Other follow-up', 'Effectiveness, unwanted effects, sleep, behaviour and diversion. Follow up whether or not medication is used. No routine bloods or ECG without a clinical indication.', '1.8.1–1.8.4, 1.8.10, 1.8.17–1.8.19'],
-          ['Annual review', 'A professional with expertise reviews medication at least yearly: preferences, benefits, harms, the day, missed doses, and support needs. There is no automatic annual stop. A trial of stopping is considered when the balance suggests it.', '1.10.1–1.10.3'],
+          ['Annual review', 'A healthcare professional with training and expertise in managing ADHD reviews medication at least yearly: preferences, benefits, harms, the day, missed doses, and support needs. That professional is not necessarily a consultant psychiatrist. The review does not remove escalation or shared care. There is no automatic annual stop.', '1.10.1–1.10.3'],
           ['Shared care', 'After titration and dose stabilisation, prescribing and monitoring should be carried out under shared-care protocol arrangements with primary care. The arrangement has to exist. It is not a promise the clinic can make alone.', '1.7.29']
         ] },
         { type: 'p', text: 'On diet, stress a balanced diet, good nutrition and regular exercise. Do not advise cutting out artificial colouring and additives as a general treatment for children and young people. Do not advise or offer fatty-acid supplements to treat ADHD in children and young people. If a food seems to change behaviour, use a diary and, where the diary supports a link, a dietitian together with the specialist. Do not say that a diet cures ADHD or that exercise removes core symptoms in everyone.' },
@@ -457,13 +490,13 @@
         { claim: 'Make a holistic shared plan. Environmental modifications are individual; written instructions, fewer distractions and shorter focus periods are examples, not a complete list.', grade: 'G', source: 'ng87-manage', locator: '1.5.1–1.5.6 and terms', limit: 'Examples are not reasonable-adjustment law by themselves. Reasonable adjustments are defined separately in the guideline.' },
         { claim: 'Offer medication to adults if significant impairment remains in at least one domain after environmental modifications. Consider non-pharmacological treatment in the situations 1.5.16 and 1.5.17 describe. When it is indicated, offer ADHD-focused supportive psychological intervention and follow-up, which may include CBT.', grade: 'G', source: 'ng87-manage', locator: '1.5.15–1.5.18', limit: 'Offer and consider are different. Coaching is not given the same sentence. RCPsych’s coaching remark is public information, not this recommendation.' },
         { claim: 'Methylphenidate is first line from age 5. Lisdexamfetamine or methylphenidate is first line for adults. Guanfacine for adults needs tertiary advice. Initiation is by a professional with expertise.', grade: 'G', source: 'ng87-meds', locator: '1.7.2, 1.7.7, 1.7.11, 1.7.17', limit: 'No doses. March 2018 licensing notes are historical. Check current product information.' },
-        { claim: 'Pulse and blood pressure every six months and at dose changes; growth on the age-specific schedule; specialist medication review at least annually; shared care after stabilisation.', grade: 'G', source: 'ng87-monitor', locator: '1.8.5, 1.8.9, 1.10.1, and 1.7.29 for shared care', limit: 'The diagram simplifies. The table is the study aid, and concern can justify closer review.' }
+        { claim: 'Pulse and blood pressure every six months and at dose changes; growth on the age-specific schedule; at least annual medication review by a healthcare professional with training and expertise in managing ADHD; shared care after stabilisation.', grade: 'G', source: 'ng87-monitor', locator: '1.8.5, 1.8.9, 1.10.1, and 1.7.29 for shared care', limit: '1.10.1 does not require a consultant psychiatrist for every review. It does not remove escalation or shared care. The diagram simplifies the clocks.' }
       ],
       quiz: [
         q('a-support-1', 'Does the annual medication review replace six-monthly pulse and blood pressure checks?',
           opts(['Yes. One yearly visit covers physical safety.', 'No. Pulse and blood pressure are checked at dose changes and every six months. The annual review is a broader decision about whether medication should continue.', 'Yes, if the person feels well.']),
           'b',
-          'NG87 1.8.9 and 1.10.1 schedule different jobs. Feeling well does not retire the cardiovascular check.',
+          'NG87 1.8.9 and 1.10.1 schedule different jobs. The annual reviewer is a healthcare professional with training and expertise in managing ADHD, not necessarily a consultant psychiatrist. Feeling well does not retire the cardiovascular check, and the review does not remove escalation or shared care.',
           { a: 'That would delete the six-monthly recommendation.', c: 'Symptoms and signs used for safety are not the same as a global feeling of being well.' },
           ['ng87-monitor']),
         q('a-support-2', 'An adult still has significant impairment after environmental changes have been tried and reviewed. What does NG87 1.5.15 say?',
