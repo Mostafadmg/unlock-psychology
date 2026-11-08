@@ -70,7 +70,7 @@
       provenance: 'overview-only',
       scope: 'Topic area only: writing a defensible report that can be followed back to the evidence and to clinical guidelines. This is not a lesson summary. No provider report template is used.',
       lessons: [pending('c7-summary', 'Course lesson summary')],
-      related: ['a-report']
+      related: ['a-report', 'a-report-maya']
     }
   ];
 });

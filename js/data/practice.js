@@ -105,10 +105,47 @@
       ]
     },
     {
+      id: 'ix-report-edit',
+      lesson: 'a-report-maya',
+      kind: 'map',
+      title: 'Case workshop 4 of 4 · Edit Maya’s draft report',
+      prompt: 'Maya is fictional. These five sentences come from an early draft of her report. Decide what each sentence does, then choose the conclusion you would sign. Open the feedback to see the reasoning and a rewrite for each sentence.',
+      note: 'Independent practice based on UKAAN AQAS sections 3.1.1.9 and 3.2 and NICE NG87 recommendations 1.3.2 and 1.3.3. This exercise does not diagnose Maya.',
+      lanes: [
+        { id: 'attribution', label: 'Credits a source with more than it saw first-hand' },
+        { id: 'gap', label: 'Treats missing information as a finding' },
+        { id: 'scale', label: 'Lets a scale decide the diagnosis' },
+        { id: 'hidden', label: 'Dismisses an alternative without evidence' },
+        { id: 'sound', label: 'Sound as written' }
+      ],
+      pieces: [
+        { id: 'partner', lane: 'attribution', text: '“Her partner confirms that her attention problems began in childhood.”',
+          explain: 'Her partner met Maya as an adult. Anything he says about childhood is her account passed on. His first-hand evidence is about current home life.',
+          rewrite: '“Her partner of seven years describes bills paid late in most months, late-payment charges and a disconnection warning; he now runs the household calendar.”' },
+        { id: 'records', lane: 'gap', text: '“Primary-school records could not be found, which indicates there were no concerns at that age.”',
+          explain: 'An untraced record is a limitation. It is not evidence that nothing happened, and NG87 1.3.3 advises against exclusion based on an uncertain time of onset.',
+          rewrite: '“Primary records could not be traced. Onset is supported by her brother’s first-hand examples and the Year 8 report; certainty about the earliest years is limited.”' },
+        { id: 'score', lane: 'scale', text: '“Her self-report scale score was very high, which confirms the diagnosis.”',
+          explain: 'NG87 1.3.2 says diagnosis should not rest solely on rating scales. A score is reported with a narrative, as an addition to the history.',
+          rewrite: '“Her self-report scale score was high. It is consistent with the history but does not by itself establish the diagnosis.”' },
+        { id: 'shifts', lane: 'hidden', text: '“Night shifts were considered and are not relevant.”',
+          explain: 'The sleep diary shows that sleep loss explains part of the recent worsening. AQAS asks the report to weigh alternatives with evidence, and a real contributor needs a place in the plan.',
+          rewrite: '“Shift-related sleep loss contributes to recent sleepiness and slowed thinking, which improve on rest days. Disorganisation predates the shifts and persists after adequate sleep.”' },
+        { id: 'brother', lane: 'sound', text: '“Her older brother described most school-night evenings from about age 8 when homework was left unfinished unless a parent sat with her, and recalled detentions for missing homework at secondary school.”',
+          explain: 'This is attributed to a source who was there, with frequency, the support needed and a consequence. It could be strengthened only by also recording what he was unsure about.',
+          rewrite: 'Keep it. Add: “He could not say how she managed in class.”' }
+      ],
+      conclusions: [
+        { id: 'confirmed', overclaims: true, label: 'ADHD is confirmed by the high scale score, the partner’s account and the school report. Shift work is not relevant.', explain: 'This stacks three overclaims. The scale cannot decide, the partner cannot give childhood evidence, and sleep loss is a real partial contributor that has been erased.' },
+        { id: 'cannot', overclaims: true, label: 'Because primary records are missing and her attention worsened on night shifts, ADHD cannot be diagnosed.', explain: 'This turns a limitation and a partial contributor into exclusions. The difficulties documented before the shifts, and those persisting after adequate sleep, are left unexplained.' },
+        { id: 'traced', overclaims: false, label: 'Criteria were reviewed against named sources. Childhood onset rests on her brother’s first-hand examples and the Year 8 report, with the untraced primary records limiting certainty. Impairment is shown at work and at home. Sleep loss contributes to the recent worsening and does not explain the earlier pattern.', explain: 'Every claim is attributed and each limit is stated with its effect. A reader can follow the outcome back to the evidence and can see what the plan must still address.' }
+      ]
+    },
+    {
       id: 'ix-report-rewrite',
       lesson: 'a-report',
       kind: 'decide',
-      title: 'Case workshop 3 of 3 · Rewrite the report conclusion',
+      title: 'Case workshop 3 of 4 · Rewrite the report conclusion',
       prompt: 'Maya is fictional. She describes missed work handovers and late household payments. Her partner, who met her as an adult, confirms the payment difficulties. Maya recalls unfinished homework. A school report records good attainment and frequent homework reminders. Problems worsened after she started rotating night shifts. The draft says: “Childhood ADHD corroborated by partner. Shift work ruled out. ADHD confirmed.” Which replacement records what the assessment actually established?',
       note: 'Independent practice based on UKAAN AQAS section 3.2. This exercise does not diagnose Maya.',
       choices: [
@@ -121,7 +158,7 @@
       id: 'ix-differential-shifts',
       lesson: 'a-differential',
       kind: 'compare',
-      title: 'Case workshop 2 of 3 · Test the night-shift explanation',
+      title: 'Case workshop 2 of 4 · Test the night-shift explanation',
       prompt: 'Maya is fictional. Work handovers and bill payments have become harder since she started rotating night shifts four months ago. She recalls homework difficulties and says she had occasional problems in a previous daytime job. Explore what each line of enquiry could add before formulating the current difficulties.',
       note: 'Independent practice based on NICE NG87 recommendation 1.3.4 and UKAAN AQAS sections 3.1 and 5. This exercise does not diagnose Maya.',
       panes: [
@@ -134,7 +171,7 @@
       id: 'ix-development-collateral',
       lesson: 'a-development',
       kind: 'decide',
-      title: 'Case workshop 1 of 3 · Ask for specific childhood examples',
+      title: 'Case workshop 1 of 4 · Ask for specific childhood examples',
       prompt: 'Maya is fictional. She remembers unfinished homework. Her school report shows good attainment and frequent homework reminders. A sibling who lived with her then is available, and Maya agrees to contact. Her current partner has known her only as an adult. Which approach most directly strengthens the developmental history?',
       note: 'Independent practice based on UKAAN AQAS sections 3.1 and 3.2. This exercise does not diagnose Maya.',
       choices: [
