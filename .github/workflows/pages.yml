@@ -1,7 +1,7 @@
 name: Deploy GitHub Pages
 
-# Ready for a later reviewed release on main.
-# This draft is not a finished course. Do not treat a preview as complete.
+# Incremental publish. A push to main deploys the current draft.
+# The site is not a finished course. Modules 2 to 7 stay pending until reviewed.
 on:
   push:
     branches:

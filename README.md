@@ -2,7 +2,7 @@
 
 Independent draft study companion for ADHD assessment and diagnosis.
 
-This repository is **not** a course from Unlock Psychology, and it is **not affiliated** with Unlock Psychology, NICE, the NHS, the Royal College of Psychiatrists, UKAAN or the World Health Organization. No provider logo is used. The introduction recording was reviewed on 8 November 2026. The seven module recordings have not been reviewed.
+This repository is **not** a course from Unlock Psychology, and it is **not affiliated** with Unlock Psychology, NICE, the NHS, the Royal College of Psychiatrists, UKAAN or the World Health Organization. No provider logo is used. The introduction recording was reviewed on 8 November 2026. Module 1 is a non-exhaustive study summary from automatic transcription, with recognition errors possible. Modules 2 to 7 have not been reviewed.
 
 The public title is **ADHD Clinical Learning**. The repository name was requested separately and does not mean the site speaks for that name.
 
@@ -18,7 +18,7 @@ Module 1’s study summary uses this provenance: **Full playback automatically t
 - This is education, not personal medical advice, a diagnosis, or a prescription.
 - Three original illustrations in `media/` are conceptual art. Each caption says **AI-generated conceptual illustration; not clinical evidence.** They are not course assets, not verified lesson teaching, and not biological diagrams. HTML lists name what is visible. Diagrams and practice exercises carry the teaching. The image files are the originals at 1280×720 and are shown in full, without cropping.
 
-Do not treat a GitHub Pages deployment of this draft as a finished course. Publishing waits until modules 2 to 7 have reviewed summaries and the programme has passed validation. Module 1 does not make the site final.
+GitHub Pages publishes this incremental draft from `main`. The live site is the introduction plus module 1, with modules 2 to 7 still pending and the guideline pages labelled as independent supplements. It is not a finished or validated course. A later reviewed summary is deployed by a normal push to `main`.
 
 ## Use it
 
@@ -42,7 +42,7 @@ Progress and quiz scores stay in the browser under the key `adhd-clinical-learni
 node tests/run.js
 ```
 
-The tests cover search, addition navigation, quiz scoring and rationales, progress reset, empty course summaries, and the `/unlock-psychology/` asset paths.
+The tests cover search, addition navigation, quiz scoring and rationales, progress reset, the module 1 provenance limits, empty summaries for modules 2 to 7, and the `/unlock-psychology/` asset paths.
 
 ## Sources
 
