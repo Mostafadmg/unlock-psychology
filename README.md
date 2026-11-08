@@ -18,7 +18,7 @@ Module 1’s study summary uses this provenance: **Full playback automatically t
 - This is education, not personal medical advice, a diagnosis, or a prescription.
 - Three original illustrations in `media/` are conceptual art. Each caption says **AI-generated conceptual illustration; not clinical evidence.** They are not course assets, not verified lesson teaching, and not biological diagrams. HTML lists name what is visible. Diagrams and practice exercises carry the teaching. The image files are the originals at 1280×720 and are shown in full, without cropping.
 
-GitHub Pages publishes this incremental draft from `main`. The live site is the introduction plus module 1, with modules 2 to 7 still pending and the guideline pages labelled as independent supplements. It is not a finished or validated course. A later reviewed summary is deployed by a normal push to `main`.
+GitHub Pages publishes this incremental draft from the `main` branch, folder `/`. The live site is the introduction plus module 1, with modules 2 to 7 still pending and the guideline pages labelled as independent supplements. It is not a finished or validated course. A later reviewed summary is published by an ordinary push to `main`. The Pages source stays “deploy from a branch”; the checked-in workflow does not deploy.
 
 ## Use it
 

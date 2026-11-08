@@ -1,37 +1,15 @@
-name: Deploy GitHub Pages
+name: Pages note
 
-# Incremental publish. A push to main deploys the current draft.
-# The site is not a finished course. Modules 2 to 7 stay pending until reviewed.
+# The live site is published by the repository Pages setting:
+# deploy from the main branch, folder / (build type legacy).
+# A push to main is published by GitHub's "pages build and deployment" workflow.
+# This file must not call deploy-pages while that source is selected.
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  note:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-      - name: Upload site
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publication path
+        run: echo "Pages publishes from the main branch root. This workflow does not deploy."
