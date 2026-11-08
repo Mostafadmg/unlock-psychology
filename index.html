@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="app-base" content="/unlock-psychology/">
+  <title>ADHD Clinical Learning</title>
+  <meta name="description" content="Draft study companion for ADHD assessment. Course summaries are pending. Independent supplements cite public sources. Not affiliated with Unlock Psychology.">
+  <link rel="icon" href="/unlock-psychology/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/unlock-psychology/css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <button class="menu-btn" id="menu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <a class="brand" href="#/"><span class="logo" aria-hidden="true"></span><span>ADHD Clinical Learning<small>Independent draft</small></span></a>
+    <form class="search" id="search-form" role="search">
+      <label class="sr" for="q">Search lessons and glossary</label>
+      <input id="q" name="q" type="search" placeholder="Search (press /)" autocomplete="off">
+    </form>
+    <p class="progress-pill" id="progress" aria-live="polite">0 additions read</p>
+  </header>
+  <div class="backdrop" id="backdrop" hidden></div>
+  <div class="layout">
+    <nav class="sidebar" id="nav" aria-label="Course topics and evidence-based additions"></nav>
+    <main id="main" tabindex="-1">
+      <noscript><h1>ADHD Clinical Learning</h1><p>This draft needs JavaScript to open lessons. It is an independent study companion, not affiliated with Unlock Psychology, and it is not medical advice.</p></noscript>
+    </main>
+  </div>
+  <p id="live" class="sr" aria-live="polite"></p>
+  <dialog id="confirm" aria-labelledby="confirm-title">
+    <h2 id="confirm-title">Reset local progress?</h2>
+    <p>This clears read marks and quiz scores stored in this browser. It does not affect any course.</p>
+    <div class="pager">
+      <button class="btn danger" id="reset-yes" type="button">Reset</button>
+      <button class="btn secondary" type="button" onclick="document.getElementById('confirm').close()">Keep progress</button>
+    </div>
+  </dialog>
+  <script src="/unlock-psychology/js/logic.js"></script>
+  <script src="/unlock-psychology/js/data/status.js"></script>
+  <script src="/unlock-psychology/js/data/sources.js"></script>
+  <script src="/unlock-psychology/js/data/course.js"></script>
+  <script src="/unlock-psychology/js/data/additions.js"></script>
+  <script src="/unlock-psychology/js/data/additions-b.js"></script>
+  <script src="/unlock-psychology/js/data/glossary.js"></script>
+  <script src="/unlock-psychology/js/diagrams.js"></script>
+  <script src="/unlock-psychology/js/app.js"></script>
+</body>
+</html>
