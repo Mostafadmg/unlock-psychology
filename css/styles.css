@@ -149,7 +149,7 @@ dialog::backdrop{background:rgba(22,50,79,.45)}
   .search{flex:1 1 100%;order:5}
   .progress-pill .full{display:none}
   .progress-pill .compact{display:inline}
-  .layout{grid-template-columns:1fr}
+  .layout{grid-template-columns:minmax(0,1fr)}
   .sidebar{position:fixed;z-index:60;top:118px;left:0;height:calc(100vh - 118px);width:min(320px,88vw);transform:translateX(-105%);transition:transform .2s ease;box-shadow:var(--shadow)}
   .sidebar.open{transform:none}
   .hero,.grid-2,.cards,.grid-3{grid-template-columns:1fr}

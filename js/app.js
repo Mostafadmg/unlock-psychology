@@ -757,7 +757,10 @@
       const result = L.evidenceMapCheck(assignments, item.pieces, conclusion);
       const lines = result.pieces.map(function (row) {
         const piece = item.pieces.filter(function (entry) { return entry.id === row.id; })[0];
-        return '<li>' + esc(piece.text) + (row.matched ? ' matches the teaching lane.' : ' is in a different lane from the teaching key.') + '</li>';
+        const lane = item.lanes.filter(function (entry) { return entry.id === piece.lane; })[0];
+        const reason = piece.explain ? '<br><span class="src">Teaching key: ' + esc(lane ? lane.label : piece.lane) + '. ' + esc(piece.explain) + '</span>' : '';
+        const rewrite = piece.rewrite ? '<br><span class="src">Rewrite: ' + esc(piece.rewrite) + '</span>' : '';
+        return '<li>' + esc(piece.text) + (row.matched ? ' matches the teaching lane.' : ' is in a different lane from the teaching key.') + reason + rewrite + '</li>';
       }).join('');
       writePractice(item, result, '<p><strong>' + esc(conclusion.explain) + '</strong></p><ul>' + lines + '</ul><p>' + (result.overclaims ? 'The statement overclaims what these fragments can show.' : 'The statement stays inside what these fragments can show.') + '</p>');
     });

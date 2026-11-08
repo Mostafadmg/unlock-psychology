@@ -277,4 +277,35 @@ test('practice exercises explain without diagnosing', function () {
   assert.equal(fit.diagnoses, false);
 });
 
+test('module 7 workshop is independent, linked, and the course summary stays pending', function () {
+  const lesson = ADDITIONS.filter(function (item) { return item.id === 'a-report-maya'; })[0];
+  assert.ok(lesson, 'a-report-maya exists');
+  const c7 = COURSE.filter(function (mod) { return mod.id === 'c7'; })[0];
+  assert.ok(c7.related.indexOf('a-report-maya') >= 0);
+  assert.equal(c7.provenance, 'overview-only');
+  assert.equal(c7.lessons[0].status, 'course-pending');
+  assert.equal(c7.lessons[0].summary, '');
+  const text = JSON.stringify(lesson.blocks);
+  assert.match(text, /no course observations/i);
+  assert.match(text, /course summary for topic 7 stays pending/);
+  assert.ok(lesson.blocks.filter(function (block) { return block.type === 'vignette'; }).length >= 5);
+  assert.ok(lesson.evidence.some(function (item) { return item.source === 'aqas' && /3\.2\.1\.1/.test(item.locator); }));
+  assert.ok(lesson.evidence.some(function (item) { return item.source === 'ng87-diag'; }));
+  const edit = PRACTICE.filter(function (item) { return item.id === 'ix-report-edit'; })[0];
+  assert.equal(edit.lesson, 'a-report-maya');
+  assert.equal(edit.kind, 'map');
+  const lanes = edit.lanes.map(function (lane) { return lane.id; });
+  edit.pieces.forEach(function (piece) {
+    assert.ok(lanes.indexOf(piece.lane) >= 0, piece.id);
+    assert.ok(piece.explain && piece.explain.length > 40, piece.id);
+    assert.ok(piece.rewrite && piece.rewrite.length > 10, piece.id);
+  });
+  assert.equal(edit.conclusions.filter(function (item) { return item.overclaims === false; }).length, 1);
+  const key = {};
+  edit.pieces.forEach(function (piece) { key[piece.id] = piece.lane; });
+  const signed = edit.conclusions.filter(function (item) { return item.overclaims === false; })[0];
+  assert.equal(Logic.evidenceMapCheck(key, edit.pieces, signed).matched, true);
+  assert.equal(Logic.evidenceMapCheck(key, edit.pieces, edit.conclusions[0]).matched, false);
+});
+
 console.log(passed + ' tests passed');
