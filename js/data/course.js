@@ -1,4 +1,4 @@
-/* Seven course-topic slots. Summaries stay empty until lesson teaching is reviewed. */
+/* Module 1 has a non-exhaustive study summary. Modules 2 to 7 stay empty. */
 (function (root, factory) {
   const api = factory();
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
@@ -13,9 +13,24 @@
       id: 'c1',
       num: 1,
       title: 'Conceptualising ADHD',
-      provenance: 'overview-only',
-      scope: 'Topic area only: how ADHD is defined, how it is thought to arise, how common it is, and the difference it makes in people’s lives. This is not a lesson summary.',
-      lessons: [pending('c1-summary', 'Course lesson summary')],
+      status: 'study-summary',
+      provenance: 'Full playback automatically transcribed; text reviewed; recognition errors possible',
+      manualListening: false,
+      verifiedTranscript: false,
+      scope: 'Non-exhaustive study summary of the module on how ADHD is described, recognised, and lived. Not a transcript.',
+      boundary: 'This is an original, non-exhaustive study summary, not a transcript and not a replacement lesson. The full playback was automatically transcribed and the resulting text was reviewed. Recognition errors are possible. It is not a manual listen and not a fully verified transcript. No recording, slides or teacher cases are published here.',
+      summary: [
+        'The module introduces adult ADHD through attention difficulties, hyperactivity and impulsivity, and it emphasises that people can present differently. It connects these features with persistence, occurrence across contexts, and meaningful difficulties in everyday life. Isolated familiar behaviours are not treated as sufficient evidence.',
+        'Recognition is another theme. Referral patterns, stereotypes and less obvious difficulties may influence who reaches assessment. The teaching discusses gender without making every person’s presentation identical. Symptoms and functional impact can change across development. Increasing independence, or less support, can make difficulties more noticeable.',
+        'The discussion goes beyond symptoms to work, education, relationships, physical and mental health, and obstacles to obtaining help. Coexisting conditions and alternative explanations receive particular attention, including anxiety, mood problems, substance use and autism. The practical message is to examine the person’s history and context instead of assuming that similar-looking difficulties have the same explanation.',
+        'The module also considers genetic research, brain research and environmental associations, while emphasising uncertainty about causes. It ends with fictional case material used to encourage clinical enquiry. Those cases and any exercises from the lesson are not reproduced here. Numerical estimates and detailed causal claims are omitted from this summary.'
+      ],
+      diagram: 'lifespan-ribbon',
+      reflection: [
+        { id: 'hesitate', prompt: 'What missing information would make you hesitate before interpreting an everyday difficulty as ADHD?' },
+        { id: 'support', prompt: 'How could you ask about someone’s support system without assuming that good performance means no impairment?' }
+      ],
+      lessons: [{ id: 'c1-summary', title: 'Course lesson summary', status: 'study-summary', summary: 'Non-exhaustive study summary on the module page.', body: '' }],
       related: ['a-meaning', 'a-models']
     },
     {

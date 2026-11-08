@@ -6,6 +6,32 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   return [
     {
+      id: 'ix-c1-quiet',
+      lesson: 'c1',
+      kind: 'decide',
+      title: 'Original check: a quiet presentation',
+      prompt: 'A girl is quiet, has anxiety, and has longstanding organisational difficulties. What follows from the independent evidence check?',
+      note: 'Original practice for the separate evidence check. It does not diagnose anyone, and it is not a case from the course.',
+      choices: [
+        { id: 'rules-out', fit: 'overclaim', label: 'Quiet behaviour rules ADHD out.', explain: 'Less overt presentations can be missed. Quiet behaviour is not an exclusion. The check asks for development, impairment, settings, and other explanations.' },
+        { id: 'explore', fit: 'open', label: 'Quiet behaviour does not rule it out. Explore development, impairment, settings, and alternative or coexisting explanations.', explain: 'Referral stereotypes can miss a less overt presentation. Anxiety may coexist or compete. Neither fact finishes the question, and this exercise does not diagnose anyone.' },
+        { id: 'proves', fit: 'overclaim', label: 'Anxiety plus organisation difficulties is enough to conclude ADHD.', explain: 'Similar-looking difficulties do not share one explanation. Anxiety does not establish ADHD, and it does not exclude it either.' }
+      ]
+    },
+    {
+      id: 'ix-c1-leave',
+      lesson: 'c1',
+      kind: 'decide',
+      title: 'Original check: difficulties noticed after leaving home',
+      prompt: 'Difficulties become apparent after someone leaves home. What does that show?',
+      note: 'Original practice. Recognition, onset and continuous full-threshold persistence are different questions. This does not diagnose anyone.',
+      choices: [
+        { id: 'adult-onset', fit: 'overclaim', label: 'It proves adult-onset ADHD.', explain: 'A later recognition is not proof that the difficulties began in adult life. Earlier symptoms and support still have to be asked about.' },
+        { id: 'always', fit: 'overclaim', label: 'It proves the full criteria were met continuously from childhood.', explain: 'Becoming visible when support falls away is not the same as having met the full threshold without interruption. The consensus separates those ideas.' },
+        { id: 'neither', fit: 'open', label: 'It proves neither. Investigate earlier symptoms and support, and the demands now. These are different questions.', explain: 'A transition can reveal difficulties that scaffolding had covered. That still leaves onset, impairment and alternative explanations to assess. This exercise does not diagnose anyone.' }
+      ]
+    },
+    {
       id: 'ix-refer',
       lesson: 'a-recognition',
       kind: 'decide',

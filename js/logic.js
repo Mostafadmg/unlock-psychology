@@ -114,12 +114,25 @@
         id: mod.id,
         kind: 'course',
         title: 'Module ' + mod.num + '. ' + mod.title,
-        text: [mod.scope, 'Course lesson summary pending. Lesson teaching has not been reviewed.'].join(' '),
+        text: mod.status === 'study-summary'
+          ? [mod.scope, mod.boundary, textOf(mod.summary), textOf(mod.reflection), mod.provenance].join(' ')
+          : [mod.scope, 'Course lesson summary pending. Lesson teaching has not been reviewed.'].join(' '),
         href: '#/course/' + mod.id,
         provenance: mod.provenance,
-        status: 'overview-only'
+        status: mod.status === 'study-summary' ? 'study-summary' : 'overview-only'
       });
     });
+    if (input.moduleCheck) {
+      items.push({
+        id: 'c1-check',
+        kind: 'supplement',
+        title: input.moduleCheck.title,
+        text: textOf(input.moduleCheck.sections),
+        href: '#/course/c1',
+        provenance: 'independent-supplement',
+        status: 'educational-draft'
+      });
+    }
     additions.forEach(function (lesson) {
       items.push({
         id: lesson.id,
@@ -198,23 +211,35 @@
     };
   }
 
-  function courseIsPending(course) {
+  function courseCoverage(course) {
     const problems = [];
+    const reviewed = [];
+    const pending = [];
+    const provenance = 'Full playback automatically transcribed; text reviewed; recognition errors possible';
     (course || []).forEach(function (mod) {
-      if (mod.provenance !== 'overview-only') {
-        problems.push(mod.id + ' provenance is ' + mod.provenance);
+      if (mod.status === 'study-summary') {
+        reviewed.push(mod.id);
+        if (mod.provenance !== provenance) problems.push(mod.id + ' provenance');
+        if (mod.manualListening !== false || mod.verifiedTranscript !== false) problems.push(mod.id + ' overclaims the recording');
+        if (!mod.summary || !mod.summary.length) problems.push(mod.id + ' has no summary');
+        if (!mod.boundary || !/not a transcript/i.test(mod.boundary)) problems.push(mod.id + ' boundary');
+        if (!mod.boundary || !/not a manual listen/i.test(mod.boundary)) problems.push(mod.id + ' listening distinction');
+        (mod.lessons || []).forEach(function (lesson) {
+          if (String(lesson.body || '').trim()) problems.push(lesson.id + ' body is not empty');
+        });
+      } else {
+        pending.push(mod.id);
+        if (mod.provenance !== 'overview-only') problems.push(mod.id + ' provenance is ' + mod.provenance);
+        if (!mod.lessons || !mod.lessons.length) problems.push(mod.id + ' has no pending lesson slot');
+        (mod.lessons || []).forEach(function (lesson) {
+          if (lesson.status !== 'course-pending') problems.push(lesson.id + ' is not course-pending');
+          const summary = lesson.summary == null ? '' : String(lesson.summary).trim();
+          const body = lesson.body == null ? '' : String(lesson.body).trim();
+          if (summary || body) problems.push(lesson.id + ' has summary text');
+        });
       }
-      if (!mod.lessons || !mod.lessons.length) {
-        problems.push(mod.id + ' has no pending lesson slot');
-      }
-      (mod.lessons || []).forEach(function (lesson) {
-        if (lesson.status !== 'course-pending') problems.push(lesson.id + ' is not course-pending');
-        const summary = lesson.summary == null ? '' : String(lesson.summary).trim();
-        const body = lesson.body == null ? '' : String(lesson.body).trim();
-        if (summary || body) problems.push(lesson.id + ' has fabricated summary text');
-      });
     });
-    return { ok: problems.length === 0, problems: problems };
+    return { ok: problems.length === 0, problems: problems, reviewed: reviewed, pending: pending };
   }
 
   function additionIds(additions) {
@@ -278,7 +303,7 @@
     nextId: nextId,
     prevId: prevId,
     scoreQuiz: scoreQuiz,
-    courseIsPending: courseIsPending,
+    courseCoverage: courseCoverage,
     additionIds: additionIds,
     moveItem: moveItem,
     sequenceCheck: sequenceCheck,

@@ -4,6 +4,7 @@
   const SOURCES = window.SOURCES;
   const COURSE = window.COURSE;
   const INTRO = window.INTRODUCTION;
+  const MODULE1_CHECK = window.MODULE1_CHECK;
   const ADDITIONS = window.ADDITIONS.concat(window.ADDITIONS_B);
   const GLOSSARY = window.GLOSSARY;
   const DIAGRAMS = window.DIAGRAMS;
@@ -11,7 +12,7 @@
   const PRACTICE = window.PRACTICE || [];
   const practiceById = {};
   PRACTICE.forEach(function (item) { practiceById[item.id] = item; });
-  const corpus = L.buildCorpus({ course: COURSE, additions: ADDITIONS, glossary: GLOSSARY, introduction: INTRO });
+  const corpus = L.buildCorpus({ course: COURSE, additions: ADDITIONS, glossary: GLOSSARY, introduction: INTRO, moduleCheck: MODULE1_CHECK });
   const additionIds = L.additionIds(ADDITIONS);
   const byAddition = {};
   ADDITIONS.forEach(function (lesson) { byAddition[lesson.id] = lesson; });
@@ -113,9 +114,10 @@
       '<a class="side-link" href="#/" data-path="/"><span class="num">H</span><span>Home</span></a>' +
       '<p class="navhead">Introduction · reviewed</p>' +
       '<a class="side-link" href="#/course/intro" data-path="/course/intro"><span class="num">0</span><span>' + esc(INTRO.title) + '<small>Reviewed 8 Nov 2026</small></span></a>' +
-      '<p class="navhead">Seven modules · summaries pending</p>' +
+      '<p class="navhead">Modules</p>' +
       COURSE.map(function (mod) {
-        return '<a class="side-link" href="#/course/' + mod.id + '" data-path="/course/' + mod.id + '"><span class="num">' + mod.num + '</span><span>' + esc(mod.title) + '<small>Overview only</small></span></a>';
+        const mark = mod.status === 'study-summary' ? 'Study summary · recognition limits' : 'Overview only';
+        return '<a class="side-link" href="#/course/' + mod.id + '" data-path="/course/' + mod.id + '"><span class="num">' + mod.num + '</span><span>' + esc(mod.title) + '<small>' + mark + '</small></span></a>';
       }).join('') +
       '<p class="navhead">Evidence-based additions · draft</p>' +
       ADDITIONS.map(function (lesson, index) {
@@ -183,17 +185,18 @@
   function viewHome() {
     return '<p class="kicker">Educational draft · reviewed against public sources on ' + esc(STATUS.reviewDate) + '</p>' +
       '<div class="hero-wrap"><section class="hero"><div><p class="draft-flag">Draft scaffold · not a validated programme</p><h1>' + esc(STATUS.title) + '</h1>' +
-      '<p>A study companion for ADHD assessment and diagnosis. The introduction has a short reviewed summary. The seven module summaries are still empty. The pages after them are separate, source-linked explanations.</p>' +
+      '<p>A study companion for ADHD assessment and diagnosis. The introduction has a short reviewed summary. Module 1 has a non-exhaustive study summary with recognition limits. Modules 2 to 7 are still empty. Other pages are separate, source-linked explanations.</p>' +
       '<p><strong>What this is not</strong></p><p>' + esc(STATUS.affiliation) + '</p><p>' + esc(STATUS.recordingsNote) + '</p></div></section>' +
       renderIllustration('hero') + '</div>' +
       '<div class="banner"><strong>Education, not personal medical advice.</strong> ' + esc(STATUS.adviceNote) + ' Completing these pages does not qualify anyone to assess or prescribe.</div>' +
       '<h2>How to read the labels</h2><div class="legend">' +
       '<span class="pill green">Introduction reviewed</span><span class="pill warn">Overview only</span><span class="pill coral">Course summary pending</span><span class="pill">Independent supplement</span><span class="pill navy">Educational draft</span></div>' +
-      '<p>Introduction reviewed means only the orientation recording was reviewed, on 8 November 2026. Overview only means a module topic is known from the course outline, not from its lesson. An independent supplement is written from public guidance and is not a summary of a teacher’s recording.</p>' +
-      '<h2>Introduction</h2><a class="mcard" href="#/course/intro"><span class="pill green">' + esc(INTRO.provenance) + '</span><h3>' + esc(INTRO.title) + '</h3><p>Short summary and a reflection activity. The seven modules are not included.</p></a>' +
+      '<p>Introduction reviewed means the orientation was reviewed on 8 November 2026. A study summary is a non-exhaustive account of automatic transcription that was read, with recognition errors possible. Overview only means that module’s lesson has not been reviewed. An independent supplement is written from public guidance and is not the teacher’s recording.</p>' +
+      '<h2>Introduction</h2><a class="mcard" href="#/course/intro"><span class="pill green">' + esc(INTRO.provenance) + '</span><h3>' + esc(INTRO.title) + '</h3><p>Short summary and a reflection activity. It does not replace the modules.</p></a>' +
       '<div class="grid-2"><section><h2>Seven course topics</h2>' +
       COURSE.map(function (mod) {
-        return '<a class="mcard" href="#/course/' + mod.id + '"><span class="pill warn">Overview only</span><h3>' + mod.num + '. ' + esc(mod.title) + '</h3><p>' + esc(mod.scope) + '</p></a>';
+        const reviewed = mod.status === 'study-summary';
+        return '<a class="mcard" href="#/course/' + mod.id + '"><span class="pill ' + (reviewed ? 'navy' : 'warn') + '">' + (reviewed ? 'Study summary' : 'Overview only') + '</span><h3>' + mod.num + '. ' + esc(mod.title) + '</h3><p>' + esc(reviewed ? mod.provenance : mod.scope) + '</p></a>';
       }).join('') +
       '</section><section><h2>Evidence-based additions</h2><p>Draft explanations for study. They do not fill the empty course summaries.</p>' +
       ADDITIONS.map(function (lesson) {
@@ -203,18 +206,58 @@
   }
 
   function viewCourse(mod) {
+    if (mod.status === 'study-summary') return viewStudyModule(mod);
     const related = mod.related.map(function (id) {
       const lesson = byAddition[id];
       return lesson ? '<a class="mcard" href="#/additions/' + id + '"><span class="pill">Independent supplement</span><h3>' + esc(lesson.title) + '</h3><p>Draft. Not the course lesson.</p></a>' : '';
     }).join('');
     return '<p class="kicker">Course topic ' + mod.num + ' of 7</p><h1>' + esc(mod.title) + '</h1>' +
       '<p><span class="pill warn">Overview only</span> <span class="pill coral">Course summary pending</span></p>' +
-      '<div class="banner"><strong>This module has not been reviewed.</strong> No recording of this module was used. The summary is empty on purpose. The introduction is the only reviewed course recording, and it does not cover this topic.</div>' +
+      '<div class="banner"><strong>This module has not been reviewed.</strong> No recording of this module was used. The summary is empty on purpose. The introduction and the module 1 study summary do not cover this topic.</div>' +
       '<p>' + esc(mod.scope) + '</p>' +
       mod.lessons.map(function (lesson) {
         return '<section class="empty" data-provenance="course-pending"><h2>' + esc(lesson.title) + '</h2><p>Status: pending. Nothing is written here. A summary will be added only after a verified review of the lesson.</p></section>';
       }).join('') +
       '<h2>Related evidence-based additions</h2><p>These are separate draft pages. They are not substitutes for the missing course summary.</p><div class="cards">' + related + '</div>' + foot();
+  }
+
+  function viewStudyModule(mod) {
+    const saved = (store.get().reflections || {})[mod.id];
+    const answers = saved && saved.answers ? saved.answers : {};
+    const related = mod.related.map(function (id) {
+      const lesson = byAddition[id];
+      return lesson ? '<a class="mcard" href="#/additions/' + id + '"><span class="pill">Independent supplement</span><h3>' + esc(lesson.title) + '</h3><p>Draft. Not this module’s summary.</p></a>' : '';
+    }).join('');
+    return '<p class="kicker">Module ' + mod.num + ' of 7 · study summary</p><h1>' + esc(mod.title) + '</h1>' +
+      '<p><span class="pill navy" data-provenance="study-summary">' + esc(mod.provenance) + '</span></p>' +
+      '<div class="banner"><strong>Non-exhaustive study summary.</strong> ' + esc(mod.boundary) + '</div>' +
+      mod.summary.map(function (paragraph) { return '<p>' + esc(paragraph) + '</p>'; }).join('') +
+      '<h2>Lifespan ribbon</h2><p>An original diagram for this summary: separate tracks for difficulties, demands and support, with question marks where evidence is missing. It is not a diagnostic score, and it is not one of the course’s figures.</p>' +
+      renderDiagram(mod.diagram) +
+      '<section class="panel reflect"><h2>Reflection</h2><p>Two original prompts from the study summary. Saving them in this browser does not assess competence or complete the module.</p>' +
+      '<form id="c1-reflection" data-reflection="' + esc(mod.id) + '">' + mod.reflection.map(function (item) {
+        return '<label for="reflect-' + esc(mod.id) + '-' + esc(item.id) + '">' + esc(item.prompt) + '</label>' +
+          '<textarea id="reflect-' + esc(mod.id) + '-' + esc(item.id) + '" name="' + esc(item.id) + '" rows="4">' + esc(answers[item.id] || '') + '</textarea>';
+      }).join('') +
+      '<div class="pager"><button class="btn" type="submit">Save reflection on this browser</button></div>' +
+      '<p class="src" data-reflect-live aria-live="polite">' + (saved ? 'A reflection for this module is already stored in this browser. You can revise it.' : '') + '</p></form></section>' +
+      renderPractices(mod) +
+      renderModuleCheck(MODULE1_CHECK) +
+      '<h2>Related evidence-based additions</h2><p>These draft pages are wider than this summary. They are not extra teaching from the lesson.</p><div class="cards">' + related + '</div>' + foot();
+  }
+
+  function renderModuleCheck(check) {
+    if (!check) return '';
+    return '<section id="evidence-check" class="evidence" data-provenance="independent-supplement"><h2>' + esc(check.title) + '</h2>' +
+      '<p><span class="pill">Independent supplement</span> <span class="pill warn">Checked ' + esc(check.checked) + '</span></p>' +
+      '<p>' + esc(check.limit) + '</p>' +
+      check.sections.map(function (section) {
+        return '<article><h3>' + esc(section.title) + '</h3>' +
+          section.paragraphs.map(function (paragraph) { return '<p>' + esc(paragraph) + '</p>'; }).join('') +
+          '<p class="src">' + section.links.map(function (link) {
+            return '<a href="' + esc(link.href) + '">' + esc(link.label) + '</a>';
+          }).join(' · ') + '</p></article>';
+      }).join('') + '</section>';
   }
 
   function viewIntro() {
@@ -225,15 +268,15 @@
       '<div class="banner"><strong>Short summary only.</strong> ' + esc(INTRO.boundary) + '</div>' +
       INTRO.summary.map(function (paragraph) { return '<p>' + esc(paragraph) + '</p>'; }).join('') +
       '<section class="panel reflect"><h2>Reflection</h2><p>These questions come from the orientation’s close. Write for your own study. Saving them in this browser does not assess competence, authorise diagnosis, or complete a module.</p>' +
-      '<form id="intro-reflection">' + INTRO.reflection.map(function (item) {
+      '<form id="intro-reflection" data-reflection="intro">' + INTRO.reflection.map(function (item) {
         return '<label for="reflect-' + esc(item.id) + '">' + esc(item.prompt) + '</label>' +
           '<textarea id="reflect-' + esc(item.id) + '" name="' + esc(item.id) + '" rows="4">' + esc(answers[item.id] || '') + '</textarea>';
       }).join('') +
       '<div class="pager"><button class="btn" type="submit">Save reflection on this browser</button></div>' +
-      '<p id="reflect-live" class="src" aria-live="polite">' + (saved ? 'A reflection is already stored in this browser. You can revise it.' : '') + '</p></form></section>' +
+      '<p id="reflect-live" class="src" data-reflect-live aria-live="polite">' + (saved ? 'A reflection is already stored in this browser. You can revise it.' : '') + '</p></form></section>' +
       '<section class="callout note" data-provenance="independent-supplement"><p class="pill">Independent supplement</p><h2>' + esc(INTRO.supplement.label) + '</h2><p>' + esc(INTRO.supplement.text) + '</p>' +
       '<p class="src"><a href="https://www.nice.org.uk/guidance/ng87/chapter/recommendations#diagnosis">NICE NG87 recommendation 1.3.1</a> · <a href="https://www.frontiersin.org/journals/psychiatry/articles/10.3389/fpsyt.2024.1380410/full">UKAAN AQAS</a></p></section>' +
-      '<p class="src">The seven module summaries remain unreviewed. Open them from the menu. They are empty.</p>' + foot();
+      '<p class="src">Module 1 has a separate study summary, with recognition limits. Modules 2 to 7 remain unreviewed and empty.</p>' + foot();
   }
 
   function viewAddition(lesson) {
@@ -294,7 +337,10 @@
   function renderDiagram(id) {
     const diagram = DIAGRAMS[id];
     if (!diagram) return '';
-    return '<figure class="diagram"><div>' + diagram.svg + '</div><figcaption>' + esc(diagram.alt) + '</figcaption></figure>';
+    const labels = diagram.labels ? '<ol>' + diagram.labels.map(function (label) {
+      return '<li><strong>' + esc(label.title) + '.</strong> ' + esc(label.text) + '</li>';
+    }).join('') + '</ol>' : '';
+    return '<figure class="diagram"><div>' + diagram.svg + '</div><figcaption><p>' + esc(diagram.alt) + '</p>' + labels + '</figcaption></figure>';
   }
 
   function renderIllustration(id) {
@@ -403,8 +449,11 @@
       return '<tr><td>' + esc(lesson.title) + '</td><td>' + (read ? 'Read' : 'Not marked') + '</td><td>' + (quiz ? quiz.best + '%' : '—') + '</td><td>' + practiceCell + '</td></tr>';
     }).join('');
     const reflection = data.reflections && data.reflections.intro;
-    return '<h1>Progress on this browser</h1><p>Stored locally under a draft key. Nothing is sent to a server. The seven module summaries cannot be marked complete. Practice marks mean an exercise was opened. They are not a diagnosis.</p>' +
-      '<p>' + (reflection ? 'The introduction reflection is saved in this browser.' : 'The introduction reflection has not been saved on this browser.') + ' It is a study note. It does not record competence or permission to diagnose.</p>' +
+    const moduleReflection = data.reflections && data.reflections.c1;
+    return '<h1>Progress on this browser</h1><p>Stored locally under a draft key. Nothing is sent to a server. Modules 2 to 7 cannot be marked complete. Practice marks mean an exercise was opened. They are not a diagnosis.</p>' +
+      '<p>' + (reflection ? 'The introduction reflection is saved in this browser.' : 'The introduction reflection has not been saved on this browser.') + ' ' +
+      (moduleReflection ? 'The module 1 reflection is saved in this browser.' : 'The module 1 reflection has not been saved on this browser.') +
+      ' These are study notes. They do not record competence or permission to diagnose.</p>' +
       '<div class="table-wrap"><table><caption>Addition progress</caption><thead><tr><th scope="col">Addition</th><th scope="col">Read</th><th scope="col">Best quiz</th><th scope="col">Practice</th></tr></thead><tbody>' +
       rows + '</tbody></table></div><button class="btn danger" type="button" id="reset">Reset local progress</button>' + foot();
   }
@@ -599,19 +648,18 @@
   }
 
   function bindReflection(root) {
-    const form = root.querySelector('#intro-reflection');
-    if (!form) return;
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const answers = {};
-      INTRO.reflection.forEach(function (item) {
-        const field = form.querySelector('[name="' + item.id + '"]');
-        answers[item.id] = field ? field.value : '';
+    Array.prototype.forEach.call(root.querySelectorAll('form[data-reflection]'), function (form) {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const answers = {};
+        Array.prototype.forEach.call(form.querySelectorAll('textarea'), function (field) {
+          answers[field.name] = field.value;
+        });
+        store.saveReflection(form.getAttribute('data-reflection'), answers);
+        persist();
+        const live = form.querySelector('[data-reflect-live]');
+        if (live) live.textContent = 'Saved on this browser. This reflection is a study note. It does not assess competence or authorise anyone to diagnose ADHD.';
       });
-      store.saveReflection('intro', answers);
-      persist();
-      const live = form.querySelector('#reflect-live');
-      if (live) live.textContent = 'Saved on this browser. This reflection is a study note. It does not assess competence or authorise anyone to diagnose ADHD.';
     });
   }
 

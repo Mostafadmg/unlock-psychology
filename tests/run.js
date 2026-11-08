@@ -8,6 +8,7 @@ const STATUS = require(path.join(root, 'js/data/status.js'));
 const SOURCES = require(path.join(root, 'js/data/sources.js'));
 const COURSE = require(path.join(root, 'js/data/course.js'));
 const INTRO = require(path.join(root, 'js/data/introduction.js'));
+const MODULE1_CHECK = require(path.join(root, 'js/data/module1-check.js'));
 const ADDITIONS = require(path.join(root, 'js/data/additions.js')).concat(require(path.join(root, 'js/data/additions-b.js')));
 const GLOSSARY = require(path.join(root, 'js/data/glossary.js'));
 const DIAGRAMS = require(path.join(root, 'js/diagrams.js'));
@@ -30,24 +31,46 @@ test('status stays honest about the course', function () {
   assert.equal(STATUS.draft, true);
   assert.match(STATUS.affiliation, /not affiliated with Unlock Psychology/i);
   assert.match(STATUS.recordingsNote, /Introduction recording reviewed 8 Nov 2026/);
-  assert.match(STATUS.recordingsNote, /seven module recordings have not been reviewed/i);
+  assert.match(STATUS.recordingsNote, /Full playback automatically transcribed; text reviewed; recognition errors possible/);
+  assert.match(STATUS.recordingsNote, /not a manual listen and not a fully verified transcript/i);
+  assert.match(STATUS.recordingsNote, /Modules 2 to 7 have not been reviewed/);
   assert.equal(STATUS.base, '/unlock-psychology/');
   assert.equal(STATUS.reviewDate, '8 November 2026');
 });
 
-test('course summaries are empty and pending', function () {
-  const check = Logic.courseIsPending(COURSE);
+test('module 1 is a limited study summary and the other modules stay empty', function () {
+  const check = Logic.courseCoverage(COURSE);
   assert.deepEqual(check.problems, []);
+  assert.deepEqual(check.reviewed, ['c1']);
+  assert.deepEqual(check.pending, ['c2', 'c3', 'c4', 'c5', 'c6', 'c7']);
   assert.equal(COURSE.length, 7);
   assert.equal(COURSE[6].title, 'Report writing');
-  COURSE.forEach(function (mod) {
-    assert.equal(mod.provenance, 'overview-only');
-    mod.lessons.forEach(function (lesson) {
-      assert.equal(lesson.status, 'course-pending');
-      assert.equal(lesson.summary, '');
-      assert.equal(lesson.body, '');
+  const module1 = COURSE[0];
+  assert.equal(module1.provenance, 'Full playback automatically transcribed; text reviewed; recognition errors possible');
+  assert.equal(module1.manualListening, false);
+  assert.equal(module1.verifiedTranscript, false);
+  assert.equal(module1.summary.length, 4);
+  assert.equal(module1.reflection.length, 2);
+  assert.equal(module1.diagram, 'lifespan-ribbon');
+  assert.ok(DIAGRAMS['lifespan-ribbon']);
+  assert.equal(DIAGRAMS['lifespan-ribbon'].labels.length, 4);
+  const published = JSON.stringify({ module1: module1, check: MODULE1_CHECK, status: STATUS.recordingsNote });
+  ['43:25', '2×', 'LocalScribe', '00:00', '21:53', '08:53', 'maternal', 'pregnan'].forEach(function (banned) {
+    assert.equal(published.toLowerCase().includes(banned.toLowerCase()), false, banned);
+  });
+  assert.equal(/\d+\s*%/.test(published), false);
+  assert.match(published, /not a manual listen/i);
+  assert.match(MODULE1_CHECK.limit, /not a claim that the recording was listened to/i);
+  assert.match(JSON.stringify(MODULE1_CHECK), /returned HTML rather than a readable PDF/);
+  assert.equal(JSON.stringify(MODULE1_CHECK).includes('psychiatry.org/getContentAsset'), false);
+  MODULE1_CHECK.sections.forEach(function (section) {
+    section.links.forEach(function (link) {
+      assert.ok(SOURCES.byId[link.source], link.source);
+      assert.equal(SOURCES.byId[link.source].href, link.href);
     });
   });
+  assert.equal(SOURCES.byId['apa-overview'].href, 'https://www.psychiatry.org/patients-families/adhd/what-is-adhd');
+  assert.match(SOURCES.byId['apa-overview'].note, /not treated as independently read/);
 });
 
 test('additions are substantive drafts with citations', function () {
@@ -136,12 +159,17 @@ test('the introduction is the only reviewed course page', function () {
 });
 
 test('search finds supplements and keeps course hits labelled', function () {
-  const corpus = Logic.buildCorpus({ course: COURSE, additions: ADDITIONS, glossary: GLOSSARY, introduction: INTRO });
+  const corpus = Logic.buildCorpus({ course: COURSE, additions: ADDITIONS, glossary: GLOSSARY, introduction: INTRO, moduleCheck: MODULE1_CHECK });
   const qb = Logic.search('QbTest', corpus);
   assert.ok(qb.some(function (hit) { return hit.id === 'a-tools' && hit.provenance === 'independent-supplement'; }));
   const report = Logic.search('report writing', corpus);
   assert.ok(report.some(function (hit) { return hit.id === 'c7' && hit.status === 'overview-only'; }));
   assert.ok(report.some(function (hit) { return hit.id === 'a-report'; }));
+  const conceptual = Logic.search('recognition errors possible', corpus);
+  assert.ok(conceptual.some(function (hit) { return hit.id === 'c1' && hit.status === 'study-summary'; }));
+  const girls = Logic.search('under-recognised', corpus);
+  assert.ok(girls.some(function (hit) { return hit.id === 'c1-check' && hit.provenance === 'independent-supplement'; }));
+  assert.equal(girls.some(function (hit) { return hit.id === 'c1'; }), false);
   const intro = Logic.search('orientation', corpus);
   assert.ok(intro.some(function (hit) { return hit.id === 'intro' && hit.status === 'introduction-reviewed'; }));
   const glossary = Logic.search('diversion', corpus);
@@ -246,7 +274,9 @@ test('practice exercises explain without diagnosing', function () {
   const kinds = {};
   PRACTICE.forEach(function (item) {
     kinds[item.kind] = true;
-    assert.ok(ADDITIONS.some(function (lesson) { return lesson.id === item.lesson; }), item.id);
+    const knownLesson = ADDITIONS.some(function (lesson) { return lesson.id === item.lesson; }) ||
+      COURSE.some(function (mod) { return mod.id === item.lesson; });
+    assert.equal(knownLesson, true, item.id);
     assert.match(item.note, /not a diagnosis|does not diagnose|not a NICE stopwatch/i);
     const blob = JSON.stringify(item);
     assert.equal(/you have adhd/i.test(blob), false, item.id);

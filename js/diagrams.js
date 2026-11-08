@@ -206,6 +206,32 @@
         node(430, 300, 250, 58, '#ffffff', '#a8432e', 'Health, medicine if indicated', '')
       )
     },
+    'lifespan-ribbon': {
+      alt: 'A lifespan ribbon with three separate tracks for difficulties, demands and support. Question marks sit where evidence is missing. The ribbon is not a diagnostic score.',
+      labels: [
+        { title: 'Difficulties', text: 'What is described, and whether it persists across contexts. The line is not a symptom count.' },
+        { title: 'Demands', text: 'What life asks at each stage. A rise in demands can make an existing difficulty easier to see.' },
+        { title: 'Support', text: 'Who organises, reminds or compensates. Good performance with heavy support is not the same as no impairment.' },
+        { title: 'Question marks', text: 'Missing evidence stays marked. A gap is not a score and not a diagnosis.' }
+      ],
+      svg: frame(
+        { id: 'd-rib-t', text: 'Difficulties, demands and support' },
+        { id: 'd-rib-d', text: 'Three tracks run from childhood to later independence: difficulties, demands and support. Question marks show where evidence is missing. Nothing on the ribbon is added up into a diagnosis.' },
+        '<text x="48" y="78" fill="#55626f" font-family="Fredoka, sans-serif" font-size="13">Childhood</text>' +
+        '<text x="300" y="78" fill="#55626f" font-family="Fredoka, sans-serif" font-size="13">Changing demands</text>' +
+        '<text x="530" y="78" fill="#55626f" font-family="Fredoka, sans-serif" font-size="13">More independence</text>' +
+        '<path d="M40 96 C180 78 280 114 400 96 C520 78 600 114 680 96" fill="none" stroke="#a8432e" stroke-width="8" stroke-linecap="round"/>' +
+        '<path d="M40 168 C200 150 300 186 420 168 C530 150 600 186 680 168" fill="none" stroke="#9a6200" stroke-width="8" stroke-linecap="round"/>' +
+        '<path d="M40 240 C160 222 300 258 440 240 C540 222 610 258 680 240" fill="none" stroke="#0b6664" stroke-width="8" stroke-linecap="round"/>' +
+        '<text x="48" y="132" fill="#16324f" font-family="Fredoka, sans-serif" font-size="14" font-weight="600">Difficulties</text>' +
+        '<text x="48" y="204" fill="#16324f" font-family="Fredoka, sans-serif" font-size="14" font-weight="600">Demands</text>' +
+        '<text x="48" y="276" fill="#16324f" font-family="Fredoka, sans-serif" font-size="14" font-weight="600">Support</text>' +
+        '<text x="250" y="150" fill="#a8432e" font-family="Fredoka, sans-serif" font-size="18" font-weight="600">?</text>' +
+        '<text x="470" y="222" fill="#9a6200" font-family="Fredoka, sans-serif" font-size="18" font-weight="600">?</text>' +
+        '<text x="360" y="330" text-anchor="middle" fill="#16324f" font-family="Fredoka, sans-serif" font-size="15" font-weight="600">Question marks are missing evidence, not points</text>' +
+        '<text x="360" y="358" text-anchor="middle" fill="#55626f" font-family="Fredoka, sans-serif" font-size="13">Original study diagram. Not a diagnostic score.</text>'
+      )
+    },
     monitor: {
       alt: 'Three different clocks: pulse and blood pressure every six months, an annual medication review by a healthcare professional with training and expertise in managing ADHD, and growth checks that depend on age. The reviewer is not necessarily a consultant psychiatrist. Simplifying the picture does not replace the NICE table or remove escalation and shared care.',
       svg: frame(

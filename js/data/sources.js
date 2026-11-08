@@ -182,6 +182,24 @@
       note: 'The Foundation has rejected conversion of DIVA into an automated or chatbot interview. Terms can change and should be rechecked before any digital use.'
     }),
     src({
+      id: 'young-2020',
+      grade: 'C',
+      short: 'Young and colleagues 2020',
+      title: 'Females with ADHD: an expert consensus statement taking a lifespan approach',
+      href: 'https://bmcpsychiatry.biomedcentral.com/articles/10.1186/s12888-020-02707-9',
+      locator: 'BMC Psychiatry, 2020. Sections on symptoms, comorbidity, background and triggers for referral.',
+      note: 'Expert consensus on identification across the lifespan in girls and women. Not a NICE recommendation. The paper describes mixed findings and sample differences. No gender ratio or persistence percentage from the paper is used on this site.'
+    }),
+    src({
+      id: 'apa-overview',
+      grade: 'P',
+      short: 'APA ADHD overview',
+      title: 'What is ADHD? American Psychiatric Association public overview',
+      href: 'https://www.psychiatry.org/patients-families/adhd/what-is-adhd',
+      locator: 'Public overview page, opened for this draft',
+      note: 'This is the APA page linked from the module 1 evidence check. A direct download of the APA explanatory PDF returned HTML rather than a readable PDF, so that PDF is not treated as independently read.'
+    }),
+    src({
       id: 'teaching',
       grade: 'T',
       short: 'Teaching synthesis',
