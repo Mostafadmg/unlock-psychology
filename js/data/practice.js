@@ -103,6 +103,45 @@
         { id: 'tailor', fit: 'open', label: 'Hold a structured discussion and use the topics that matter for each person, including driving only when it is relevant.', explain: 'Possible topics include understanding, strengths, stigma, environmental modifications, education and work, relationships, coexisting conditions, substance misuse and driving. Relevance shapes the conversation. Signposting in 1.4.4 and 1.4.5 is still separate.' },
         { id: 'skip', fit: 'overclaim', label: 'Skip feedback unless the person asks for medication.', explain: 'The discussion follows diagnosis and informs the shared plan. It is not reserved for a medication decision, and 1.4.4 still matters when diagnosis is not made.' }
       ]
+    },
+    {
+      id: 'ix-report-rewrite',
+      lesson: 'a-report',
+      kind: 'decide',
+      title: 'Case workshop 3 of 3 · Rewrite the report conclusion',
+      prompt: 'Maya is fictional. She describes missed work handovers and late household payments. Her partner, who met her as an adult, confirms the payment difficulties. Maya recalls unfinished homework. A school report records good attainment and frequent homework reminders. Problems worsened after she started rotating night shifts. The draft says: “Childhood ADHD corroborated by partner. Shift work ruled out. ADHD confirmed.” Which replacement records what the assessment actually established?',
+      note: 'Independent practice based on UKAAN AQAS section 3.2. This exercise does not diagnose Maya.',
+      choices: [
+        { id: 'confirm', fit: 'overclaim', label: 'Her partner and school report confirm childhood ADHD. Night shifts can be listed as background.', explain: 'Her partner observed adult functioning only. The school report records reminders in one setting. Neither establishes childhood ADHD, and the timing of the deterioration makes shift-related sleep disruption relevant to the formulation.' },
+        { id: 'attribute', fit: 'open', label: 'Describe the impact at work and home, attribute the partner’s evidence to adult home life, record what the school report shows, and explain what still needs checking before reaching a conclusion.', explain: 'A defensible interim formulation distinguishes Maya’s account of work and school, her partner’s account of adult home life, and the school record. Next, clarify how often homework difficulties occurred, what impact they had across childhood settings, and how attention varies with shifts and sleep. The next review should address those gaps and agree support for current difficulties.' },
+        { id: 'exclude', fit: 'overclaim', label: 'Good school attainment and worsening with night shifts exclude ADHD. Close the assessment.', explain: 'Attainment does not show how much support Maya needed or whether she had difficulties elsewhere. Worsening after night shifts may explain part of the current change. It does not establish why earlier difficulties occurred.' }
+      ]
+    },
+    {
+      id: 'ix-differential-shifts',
+      lesson: 'a-differential',
+      kind: 'compare',
+      title: 'Case workshop 2 of 3 · Test the night-shift explanation',
+      prompt: 'Maya is fictional. Work handovers and bill payments have become harder since she started rotating night shifts four months ago. She recalls homework difficulties and says she had occasional problems in a previous daytime job. Explore what each line of enquiry could add before formulating the current difficulties.',
+      note: 'Independent practice based on NICE NG87 recommendation 1.3.4 and UKAAN AQAS sections 3.1 and 5. This exercise does not diagnose Maya.',
+      panes: [
+        { id: 'baseline', label: 'Establish the earlier baseline', text: 'Ask Maya for one concrete example from the daytime job. Find out how often it happened, what it cost and what support helped. Ask about functioning at home over the same period. Difficulties predating shift work weaken a shift-only explanation if the examples show a persistent pattern with meaningful impact.' },
+        { id: 'sleep', label: 'Compare shifts and rest days', text: 'Ask about sleep timing, total sleep, daytime sleepiness and attention during night shifts, day shifts and stretches of adequate sleep. A pattern closely tied to poor sleep would make sleep disruption a plausible contributor. Investigate physical or other sleep concerns when indicated by the history.' },
+        { id: 'weigh', label: 'Reassess the formulation', text: 'If attention improves with adequate sleep, record which difficulties improve and which persist. If older examples remain sparse, say so explicitly. A recent aggravating factor and an earlier developmental pattern may coexist. Improvement with rest cannot decide the developmental question on its own.' }
+      ]
+    },
+    {
+      id: 'ix-development-collateral',
+      lesson: 'a-development',
+      kind: 'decide',
+      title: 'Case workshop 1 of 3 · Ask for specific childhood examples',
+      prompt: 'Maya is fictional. She remembers unfinished homework. Her school report shows good attainment and frequent homework reminders. A sibling who lived with her then is available, and Maya agrees to contact. Her current partner has known her only as an adult. Which approach most directly strengthens the developmental history?',
+      note: 'Independent practice based on UKAAN AQAS sections 3.1 and 3.2. This exercise does not diagnose Maya.',
+      choices: [
+        { id: 'partner', fit: 'overclaim', label: 'Ask the partner to confirm whether the problems started in childhood.', explain: 'Her partner can describe first-hand observations of adult home life. Anything about childhood passed on by Maya remains her account, even when repeated by the partner.' },
+        { id: 'school', fit: 'overclaim', label: 'Treat the homework reminder as proof of childhood impairment across settings.', explain: 'The report gives a useful school clue. It does not establish frequency, consequences, whether the reminders were exceptional or what happened outside school.' },
+        { id: 'sibling', fit: 'open', label: 'Ask the sibling for directly observed examples at home, including how often help was needed and what happened without it. Compare those examples with Maya’s account and the school record.', explain: 'A neutral prompt is “What happened on evenings when nobody reminded Maya about homework?” Follow up on when it happened, who observed it, how often and what the consequences were. Record which parts of the sibling’s recollection are clear or uncertain. Use the partner separately for current functioning.' }
+      ]
     }
   ];
 });
